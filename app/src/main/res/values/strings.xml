@@ -7,4 +7,22 @@
     <string name="join_us">Want to watch together? Join us here!</string>
     <string name="forget_password">Forget password?</string>
     <string name="M3_logo">M3 logo</string>
+    <string name="register_p1_title">Something about you</string>
+    <string name="first_name">First Name</string>
+    <string name="surname">Surname</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="next">Next</string>
+    <string name="dob">Date of Birth</string>
+    <string name="pick_a_date">Click to pick a date</string>
+    <string name="register_p2_title">Where do you live?</string>
+    <string name="street_address">Street Address</string>
+    <string name="postcode">Postcode</string>
+    <string name="state">State</string>
+    <string name="register_p3_title">Almost there</string>
+    <string name="confirm_pw">Confirm Password</string>
+    <string name="Submit">Submit</string>
+
+
 </resources>
