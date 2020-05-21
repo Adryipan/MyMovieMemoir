@@ -25,13 +25,13 @@
         android:layout_width="0dp"
         android:layout_height="43dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="80dp"
         android:ems="10"
         android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -71,13 +71,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="80dp"
+        android:layout_marginBottom="170dp"
         android:text="@string/signin_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordET" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordET"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/forgetPasswordTV"
@@ -91,16 +94,16 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordET" />
 
     <TextView
-        android:id="@+id/createAccountTV"
+        android:id="@+id/registerTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="80dp"
         android:text="@string/join_us"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signinBtn" />
 
