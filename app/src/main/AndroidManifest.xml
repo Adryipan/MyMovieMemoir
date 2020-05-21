@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegisterP1Activity"></activity>
+        <activity
+            android:name=".NavHomeActivity"
+            android:label="@string/title_activity_nav_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".RegisterP1Activity" />
         <activity android:name=".RegisterP2Activity" />
         <activity android:name=".RegisterP3Activity" />
         <activity android:name=".MainActivity">
