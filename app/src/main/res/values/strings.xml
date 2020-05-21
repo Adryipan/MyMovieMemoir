@@ -23,6 +23,7 @@
     <string name="register_p3_title">Almost there</string>
     <string name="confirm_pw">Confirm Password</string>
     <string name="Submit">Submit</string>
+    <string name="Back">Go Back</string>
 
 
 </resources>

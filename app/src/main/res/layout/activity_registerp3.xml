@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.register_p2_fragment">
+    tools:context=".RegisterP3Activity">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="80dp"
-        android:text="@string/register_p2_title"
+        android:text="@string/register_p3_title"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -22,67 +22,59 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/streetAddressET"
+        android:id="@+id/emailET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="80dp"
         android:ems="10"
-        android:hint="@string/street_address"
-        android:inputType="textPersonName"
+        android:hint="@string/email_hint"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/postcodeET"
+        android:id="@+id/passwordET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="80dp"
         android:ems="10"
-        android:hint="@string/postcode"
-        android:inputType="textPersonName"
+        android:hint="@string/password_hint"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streetAddressET" />
+        app:layout_constraintTop_toBottomOf="@+id/emailET" />
 
-    <Spinner
-        android:id="@+id/stateSpinner"
+    <EditText
+        android:id="@+id/confirmpwET"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="272dp"
-        android:text="TextView"
+        android:layout_marginEnd="80dp"
+        android:ems="10"
+        android:hint="@string/confirm_pw"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postcodeET" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordET" />
 
     <Button
-        android:id="@+id/p2NextBtn"
+        android:id="@+id/submitBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="450dp"
         android:layout_marginEnd="80dp"
-        android:text="@string/next"
+        android:text="@string/Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
