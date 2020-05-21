@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MyMovieMenoir</string>
+    <string name="sigin_welcome">Welcome to My Movie Menoir</string>
+    <string name="email_hint">Email address</string>
+    <string name="password_hint">Password</string>
+    <string name="signin_button">Sign In</string>
+    <string name="join_us">Want to watch together? Join us here!</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="M3_logo">M3 logo</string>
 </resources>
