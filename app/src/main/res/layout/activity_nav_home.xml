@@ -14,12 +14,12 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_nav_home"
-        app:menu="@menu/activity_nav_home_drawer" />
+        app:menu="@menu/nav_home" />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
