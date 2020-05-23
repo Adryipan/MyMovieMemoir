@@ -45,5 +45,20 @@
     <string name="delete">Delete</string>
     <string name="view_movie">View movie</string>
 
+    <string name="add_to_memoir_title">Add to Memoir</string>
+    <string name="add_to_memoir_description">Just a but more info</string>
+    <string name="memoir_watch_date_time">When did you watch it?</string>
+    <string name="memoir_watch_area">Where did you watch it?</string>
+    <string name="memoir_watch_comment">What do you think?</string>
+    <string name="comment">Comment</string>
+    <string name="rating">Your rating</string>
+
+    <string name="memoir_title">My Movie Memoir</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="date">Watch date</string>
+    <string name="your_rating">Your Rating</string>
+    <string name="public_rating">Online Rating</string>
+
+    <string name="report_title">Report</string>
 
 </resources>
