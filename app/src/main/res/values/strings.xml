@@ -24,9 +24,7 @@
     <string name="confirm_pw">Confirm Password</string>
     <string name="Submit">Submit</string>
     <string name="Back">Go Back</string>
-    <string name="title_activity_nav_home">NavHomeActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_nav_home">My Movie Menoir</string>
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="nav_header_title">My Movie Menoir</string>
@@ -36,12 +34,15 @@
     <string name="name_error">Name not available</string>
     <string name="data_error">Data not available</string>
     <string name="greeting">Greeting</string>
-    <string name="top_five">Your top Five of the year</string>
+    <string name="top_five">My top Five of the year</string>
     <string name="search_bar_hint">What\'s in your mind?</string>
     <string name="search_title">Movie Search</string>
     <string name="online_rating">Online rating:</string>
     <string name="movie_view_watchlist">Watch later</string>
     <string name="movie_view_memoir">Add to Memoir</string>
+    <string name="movie_name">Movie Name</string>
+    <string name="release_date">Release Date</string>
+    <string name="my_rating">My Rating</string>
 
     <string name="watchlist_title">Your Watchlist</string>
     <string name="delete">Delete</string>

@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.model.TopFiveMovieResult;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,6 +66,8 @@ public class HomeFragment extends Fragment {
         getNameTask.execute(userId);
 
         //Show top five movie of the year for the user
+        GetTopFiveTask getTopFiveTask = new GetTopFiveTask();
+        getTopFiveTask.execute(userId);
 
         return view;
     }
@@ -85,7 +90,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private class GetTopFive extends AsyncTask<String, Void, String>{
+    private class GetTopFiveTask extends AsyncTask<String, Void, String>{
 
         @Override
         protected String doInBackground(String... strings) {
@@ -96,12 +101,25 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             try{
-                JSONObject json = new JSONObject(result);
-
-
+                TextView topFive = view.findViewById(R.id.topFiveTV);
+                StringBuilder sb = new StringBuilder();
+                JSONArray jsonArray = new JSONArray(result);
+                int length = jsonArray.length(); 
+                if(length > 0){
+                    for(int i = 0; i < length; i++){
+                        JSONObject thisMovie = jsonArray.getJSONObject(i);
+                        String name = thisMovie.getString("Movie Name");
+                        String release = thisMovie.getString("Release Date");
+                        String rating = thisMovie.getString("Rating");
+                        sb.append(name + " " + release + " " + rating + "\n");
+                    }
+                }
+                topFive.setText(sb.toString());
             }catch(Exception e){
                 e.printStackTrace();
             }
+
+
         }
     }
 }
