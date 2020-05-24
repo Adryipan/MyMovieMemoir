@@ -1,100 +1,91 @@
 package com.example.mymoviemenoir;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 public class RegisterP1Activity extends AppCompatActivity {
 
-    private TextView dobTextView;
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
-    private EditText fNameET;
-    private EditText surnameET;
-    private RadioGroup genderRadioGroup;
-    private RadioButton genderRB;
-    private String fName;
-    private String surname;
-    private String gender;
-    private String dob;
+    private String email;
+    private String password;
 
+    private EditText emailET;
+    private EditText passwordET;
+    private EditText confirmPWET;
+
+    private NetworkConnection networkConnection = null;
+    private int errorColour = ContextCompat.getColor(getApplicationContext(), R.color.design_default_color_error);
+    private ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColour);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registerp1);
-        dobTextView = findViewById(R.id.dobTV);
+        networkConnection = new NetworkConnection();
 
-        dobTextView.setOnClickListener(new View.OnClickListener() {
+
+        Button submitBtn = findViewById(R.id.submitBtn);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        RegisterP1Activity.this, android.R.style.Theme_DeviceDefault, onDateSetListener, year, month, day);
-
-                dialog.show();
-            }
-        });
-
-        onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                dob = dayOfMonth + "/" + month + "/" + year;
-                dobTextView.setText(dob);
-
-            }
-        };
-
-        genderRadioGroup = findViewById(R.id.genderRadioGroup);
-
-
-
-        Button nextBtn = findViewById(R.id.nextBtn);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterP1Activity.this, RegisterP2Activity.class);
-                fNameET = findViewById(R.id.firstNameET);
-                surnameET = findViewById(R.id.surnameET);
-
-                fName = fNameET.getText().toString();
-                surname = surnameET.getText().toString();
-                checkButton(v);
-
-                intent.putExtra("FIRSTNAME", fName);
-                intent.putExtra("SURNAME", surname);
-                intent.putExtra("DOB", dob);
-                intent.putExtra("GENDER", gender);
-                startActivity(intent);
-
-
+                emailET = findViewById(R.id.emailET);
+                passwordET = findViewById(R.id.passwordET);
+                confirmPWET = findViewById(R.id.confirmpwET);
+                //Check if the user exist
+                GetByUsernameTask checkEmail = new GetByUsernameTask();
+                checkEmail.execute(emailET.getText().toString());
             }
         });
     }
 
-    protected void checkButton(View v){
-        int radioId = genderRadioGroup.getCheckedRadioButtonId();
-        genderRB = findViewById(radioId);
-        gender = genderRB.getText().toString().substring(0,1);
+    private class GetByUsernameTask extends AsyncTask<String, Void, String>{
 
+        @Override
+        protected String doInBackground(String... strings) {
+            String username = strings[0];
+            return networkConnection.getByUsername(username);
+        }
+
+        @Override
+        protected void onPostExecute(String response){
+            //If this username does not exist
+            if(response.isEmpty()){
+//                Check if the two password are the same
+                if(passwordET.getText().toString().equals(confirmPWET.getText().toString())){
+                   Intent intent = new Intent(RegisterP1Activity.this, RegisterP2Activity.class);
+                   intent.putExtra("USERNAME", email);
+                   intent.putExtra("PASSWORD", password);
+                   startActivity(intent);
+
+                }else{
+                    //Password check fails
+                    String errorString = "Password does not match. Please try again.";
+                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
+                    spannableStringBuilder.setSpan(foregroundColorSpan, 0 , errorString.length(), 0);
+                    confirmPWET.setError(spannableStringBuilder);
+                }
+
+            }else{
+                //The Email already exist
+                String errorString = "This email already exits. Please try another email or click forget password.";
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
+                spannableStringBuilder.setSpan(foregroundColorSpan, 0, errorString.length(), 0);
+                emailET.setError(spannableStringBuilder);
+            }
+
+
+
+
+        }
     }
 }

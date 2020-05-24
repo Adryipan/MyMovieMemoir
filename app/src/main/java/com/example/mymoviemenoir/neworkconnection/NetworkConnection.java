@@ -1,13 +1,17 @@
 package com.example.mymoviemenoir.neworkconnection;
 
 
+import com.example.mymoviemenoir.entity.Credentials;
+import com.example.mymoviemenoir.entity.Person;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class NetworkConnection {
@@ -42,6 +46,21 @@ public class NetworkConnection {
         return results;
     }
 
+    public String getByUsername(String email){
+        final String methodPath = RESOURCE_CREDENTIAL + "findByUsername/" + email;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return results;
+    }
+
     public String getPersonNameById(String userId){
         final String methodPath = RESOURCE_PERSON + userId;
         Request.Builder builder = new Request.Builder();
@@ -71,6 +90,46 @@ public class NetworkConnection {
             e.printStackTrace();
         }
         return results;
+    }
+
+    public String addUser(String[] details){
+        Person user = new Person(details[0], details[1],details[2], details[3], details[4], details[5], details[6], details[7]);
+        //Construct the json
+        Gson gson = new Gson();
+        String userJson = gson.toJson(user);
+        String strResponse = "";
+        final String methodPath = RESOURCE_PERSON;
+        RequestBody body = RequestBody.create(userJson, JSON);
+        Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+        try{
+            Response response = client.newCall(request).execute();
+            strResponse = response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return strResponse;
+    }
+
+    public String addCredentials(String[] details){
+        Credentials credentials = new Credentials(details[0],details[1],details[2], details[3]);
+
+        //Construct the json
+        Gson gson = new Gson();
+        String userJson = gson.toJson(credentials);
+        String strResponse = "";
+        final String methodPath = RESOURCE_PERSON;
+        RequestBody body = RequestBody.create(userJson, JSON);
+        Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+        try{
+            Response response = client.newCall(request).execute();
+            strResponse = response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return strResponse;
+
     }
 
 }

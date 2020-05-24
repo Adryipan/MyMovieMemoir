@@ -18,13 +18,13 @@
             android:label="@string/title_activity_nav_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterP1Activity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".RegisterP2Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterP3Activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterP1Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>

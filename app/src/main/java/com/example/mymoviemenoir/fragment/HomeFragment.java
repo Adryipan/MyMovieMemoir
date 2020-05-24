@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
         // Inflate the View for this fragment
         this.view = inflater.inflate(R.layout.fragment_home, container, false);
         networkConnection = new NetworkConnection();
+
         //Get current day and time
         Date date = Calendar.getInstance().getTime();
 
@@ -104,7 +105,7 @@ public class HomeFragment extends Fragment {
                 TextView topFive = view.findViewById(R.id.topFiveTV);
                 StringBuilder sb = new StringBuilder();
                 JSONArray jsonArray = new JSONArray(result);
-                int length = jsonArray.length(); 
+                int length = jsonArray.length();
                 if(length > 0){
                     for(int i = 0; i < length; i++){
                         JSONObject thisMovie = jsonArray.getJSONObject(i);
