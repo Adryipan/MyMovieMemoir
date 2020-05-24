@@ -1,4 +1,6 @@
 package com.example.mymoviemenoir.fragment;
 
-public class MapsFragment {
+import androidx.fragment.app.Fragment;
+
+public class MapsFragment extends Fragment {
 }

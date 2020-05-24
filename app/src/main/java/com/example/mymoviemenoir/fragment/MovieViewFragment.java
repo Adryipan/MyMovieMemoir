@@ -1,4 +1,6 @@
 package com.example.mymoviemenoir.fragment;
 
-public class MovieViewFragment {
+import androidx.fragment.app.Fragment;
+
+public class MovieViewFragment extends Fragment {
 }
