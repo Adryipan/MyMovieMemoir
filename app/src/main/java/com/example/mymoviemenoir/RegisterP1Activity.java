@@ -24,8 +24,6 @@ public class RegisterP1Activity extends AppCompatActivity {
     private EditText confirmPWET;
 
     private NetworkConnection networkConnection = null;
-    private int errorColour = ContextCompat.getColor(getApplicationContext(), R.color.design_default_color_error);
-    private ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColour);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +57,7 @@ public class RegisterP1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response){
             //If this username does not exist
-            if(response.isEmpty()){
+            if(response.length() == 2){
 //                Check if the two password are the same
                 if(passwordET.getText().toString().equals(confirmPWET.getText().toString())){
                    Intent intent = new Intent(RegisterP1Activity.this, RegisterP2Activity.class);
@@ -70,17 +68,13 @@ public class RegisterP1Activity extends AppCompatActivity {
                 }else{
                     //Password check fails
                     String errorString = "Password does not match. Please try again.";
-                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
-                    spannableStringBuilder.setSpan(foregroundColorSpan, 0 , errorString.length(), 0);
-                    confirmPWET.setError(spannableStringBuilder);
+                    confirmPWET.setError(errorString);
                 }
 
             }else{
                 //The Email already exist
                 String errorString = "This email already exits. Please try another email or click forget password.";
-                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
-                spannableStringBuilder.setSpan(foregroundColorSpan, 0, errorString.length(), 0);
-                emailET.setError(spannableStringBuilder);
+                emailET.setError(errorString);
             }
 
 
