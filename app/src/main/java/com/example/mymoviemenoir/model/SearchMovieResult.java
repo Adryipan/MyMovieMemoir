@@ -5,11 +5,21 @@ public class SearchMovieResult {
     private String movieName;
     private String releaseYear;
     private String imageLink;
+    private String imdbID;
 
-    public SearchMovieResult(String movieName, String releaseYear, String imageLink) {
+    public SearchMovieResult(String movieName, String releaseYear, String imageLink, String imdbID) {
         this.movieName = movieName;
         this.releaseYear = releaseYear;
         this.imageLink = imageLink;
+        this.imdbID = imdbID;
+    }
+
+    public String getImdbID() {
+        return imdbID;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
     }
 
     public String getMovieName() {
@@ -31,6 +41,7 @@ public class SearchMovieResult {
     public String getImageLink() {
         return imageLink;
     }
+
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;

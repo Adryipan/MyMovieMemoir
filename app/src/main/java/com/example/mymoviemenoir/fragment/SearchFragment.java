@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,10 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
-import com.example.mymoviemenoir.SearchGoogleAPI;
+import com.example.mymoviemenoir.neworkconnection.SearchGoogleAPI;
 import com.example.mymoviemenoir.adapter.SearchMovieRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.SearchMovieResult;
-import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import java.util.ArrayList;
 
@@ -58,7 +56,7 @@ public class SearchFragment extends Fragment {
                     @Override
                     protected void onPostExecute(String result) {
                         ArrayList<SearchMovieResult> searchMovieResults = SearchGoogleAPI.getNameYearImage(result);
-                        adapter = new SearchMovieRecyclerViewAdapter(searchMovieResults);
+                        adapter = new SearchMovieRecyclerViewAdapter(searchMovieResults, view.getContext());
                         searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
                         searchRecyclerView.addItemDecoration(new DividerItemDecoration(searchRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
                         searchRecyclerView.setAdapter(adapter);

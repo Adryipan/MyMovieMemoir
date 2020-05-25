@@ -1,6 +1,7 @@
 package com.example.mymoviemenoir.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymoviemenoir.MovieViewActivity;
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.model.SearchMovieResult;
 import com.squareup.picasso.Picasso;
@@ -37,9 +39,11 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
     private List<SearchMovieResult> searchMovieResults;
+    private Context context;
 
-    public SearchMovieRecyclerViewAdapter(List<SearchMovieResult> movies){
+    public SearchMovieRecyclerViewAdapter(List<SearchMovieResult> movies, Context context){
         searchMovieResults = movies;
+        this.context = context;
     }
 
     @NonNull
@@ -74,10 +78,13 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
                 .into(imPoster);
         //Set view movie button
         TextView tvViewMovie = ViewHolder.viewMovie;
-        tvMovieName.setOnClickListener(new View.OnClickListener() {
+        tvViewMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, MovieViewActivity.class);
+                intent.putExtra("MOVIE NAME", movie.getMovieName());
+                intent.putExtra("IMDB ID", movie.getImdbID());
+                context.startActivity(intent);
             }
         });
 

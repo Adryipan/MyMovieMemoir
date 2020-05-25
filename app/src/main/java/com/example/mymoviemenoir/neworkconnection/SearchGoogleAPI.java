@@ -1,14 +1,10 @@
-package com.example.mymoviemenoir;
-
-import android.view.textclassifier.TextLinks;
+package com.example.mymoviemenoir.neworkconnection;
 
 import com.example.mymoviemenoir.model.SearchMovieResult;
-import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -87,7 +83,11 @@ public class SearchGoogleAPI {
 
                         //extract image link (og.image)
                         String imageLink = metaTag.getString("og:image");
-                        SearchMovieResult thisResult = new SearchMovieResult(movieName, releaseYear, imageLink);
+
+                        //extract the imdb id for the movie api
+                        String imdbID = metaTag.getString("pageid");
+
+                        SearchMovieResult thisResult = new SearchMovieResult(movieName, releaseYear, imageLink, imdbID);
                         movieList.add(thisResult);
                     }
                 }
