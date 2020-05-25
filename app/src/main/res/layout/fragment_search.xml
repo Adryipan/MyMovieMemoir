@@ -22,11 +22,6 @@
         android:layout_height="wrap_content"
         android:text="@string/search" />
 
-    <TextView
-        android:id="@+id/resultTV"
-        android:layout_width="match_parent"
-        android:layout_height="221dp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"

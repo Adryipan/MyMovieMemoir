@@ -11,14 +11,23 @@
 
     <TextView
         android:id="@+id/release_date"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
+        android:layout_weight="0.5"
+        android:textAlignment="center" />
+
     <ImageView
+        android:id="@+id/movie_poster"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/viewMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:text="@string/view_movie"
+        android:textAlignment="center" />
 
 </LinearLayout>

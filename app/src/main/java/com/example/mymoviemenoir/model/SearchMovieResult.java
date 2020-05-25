@@ -4,10 +4,12 @@ public class SearchMovieResult {
 
     private String movieName;
     private String releaseYear;
+    private String imageLink;
 
-    public SearchMovieResult(String movieName, String releaseYear) {
+    public SearchMovieResult(String movieName, String releaseYear, String imageLink) {
         this.movieName = movieName;
         this.releaseYear = releaseYear;
+        this.imageLink = imageLink;
     }
 
     public String getMovieName() {
@@ -24,5 +26,13 @@ public class SearchMovieResult {
 
     public void setReleaseYear(String releaseYear) {
         this.releaseYear = releaseYear;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 }

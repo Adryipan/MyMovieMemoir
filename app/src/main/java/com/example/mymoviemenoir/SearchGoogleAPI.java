@@ -2,12 +2,15 @@ package com.example.mymoviemenoir;
 
 import android.view.textclassifier.TextLinks;
 
+import com.example.mymoviemenoir.model.SearchMovieResult;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -60,5 +63,40 @@ public class SearchGoogleAPI {
         }
 
         return snippet;
+    }
+
+    public static ArrayList<SearchMovieResult> getNameYearImage(String result){
+        ArrayList<SearchMovieResult> movieList = new ArrayList<SearchMovieResult>();
+        //extract the item array (Only add imdb result for the moment because they format their result well)
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            if(jsonArray != null && jsonArray.length() > 0) {
+                int length = jsonArray.length();
+                for (int i = 0; i < length; i++) {
+                    //Extract from metatags seems easier
+                    JSONObject metaTag = jsonArray.getJSONObject(i).getJSONObject("pagemap").getJSONArray("metatags").getJSONObject(0);
+                    //Only look at IMDB
+                    if(metaTag.getString("og:site_name").toUpperCase().equals("IMDB")){
+                        String title = metaTag.getString("title");
+                        //extract the name (Title of every jsonObject)
+                        String movieName = title.split("-")[0].split(Pattern.quote("("))[0].trim();
+
+                        //extract the year (From the title of each json)
+                        String releaseYear = title.split("-")[0].split(Pattern.quote("("))[1].substring(0,4);
+
+                        //extract image link (og.image)
+                        String imageLink = metaTag.getString("og:image");
+                        SearchMovieResult thisResult = new SearchMovieResult(movieName, releaseYear, imageLink);
+                        movieList.add(thisResult);
+                    }
+                }
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return movieList;
     }
 }

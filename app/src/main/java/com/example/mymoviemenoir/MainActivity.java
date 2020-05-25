@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 String username = usernameET.getText().toString();
                 String password = passwordET.getText().toString();
 
+                //for debug
+                username = "john.smith@monash.edu.au";
+                password = "john";
+
                 if(!username.isEmpty() && !password.isEmpty()){
                     GetByAuthenticationTask getByAuthenticationTask = new GetByAuthenticationTask();
                     getByAuthenticationTask.execute(username, password);

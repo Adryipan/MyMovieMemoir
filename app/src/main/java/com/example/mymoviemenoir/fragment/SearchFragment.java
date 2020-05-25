@@ -10,18 +10,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.SearchGoogleAPI;
+import com.example.mymoviemenoir.adapter.SearchMovieRecyclerViewAdapter;
+import com.example.mymoviemenoir.model.SearchMovieResult;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
+
+import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
-    NetworkConnection networkConnection = null;
-    View view = null;
-    Button searchButton;
-    TextView resultTV;
-    EditText searchET;
+    private View view = null;
+    private Button searchButton;
+    private EditText searchET;
+    private SearchMovieRecyclerViewAdapter adapter;
+    private RecyclerView searchRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+
 
     public SearchFragment(){
     }
@@ -32,7 +41,6 @@ public class SearchFragment extends Fragment {
         // Inflate the View for this fragment
         this.view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        resultTV = view.findViewById(R.id.resultTV);
         searchET = view.findViewById(R.id.searchET);
         searchButton = view.findViewById(R.id.searchBtn);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -46,9 +54,16 @@ public class SearchFragment extends Fragment {
                         return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"3"});
                     }
 
+
                     @Override
                     protected void onPostExecute(String result) {
-                        resultTV.setText(SearchGoogleAPI.getSnippet(result));
+                        ArrayList<SearchMovieResult> searchMovieResults = SearchGoogleAPI.getNameYearImage(result);
+                        adapter = new SearchMovieRecyclerViewAdapter(searchMovieResults);
+                        searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
+                        searchRecyclerView.addItemDecoration(new DividerItemDecoration(searchRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
+                        searchRecyclerView.setAdapter(adapter);
+                        layoutManager = new LinearLayoutManager(searchRecyclerView.getContext());
+                        searchRecyclerView.setLayoutManager(layoutManager);
                     }
                 }.execute();
             }
