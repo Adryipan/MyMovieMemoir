@@ -2,23 +2,23 @@ package com.example.mymoviemenoir.entity;
 
 public class Credentials {
 
-    private String userId;
+    private PersonWithId userId;
     private String username;
     private String password;
     private String signUpDate;
 
-    public Credentials(String userId, String username, String password, String signUpDate) {
+    public Credentials(PersonWithId userId, String username, String password, String signUpDate) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.signUpDate = signUpDate;
     }
 
-    public String getUserId() {
+    public PersonWithId getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(PersonWithId userId) {
         this.userId = userId;
     }
 

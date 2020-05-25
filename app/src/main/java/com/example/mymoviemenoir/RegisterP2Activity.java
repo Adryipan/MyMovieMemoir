@@ -63,6 +63,11 @@ public class RegisterP2Activity extends AppCompatActivity {
                 month = month + 1;
                 dob = dayOfMonth + "/" + month + "/" + year;
                 dobTextView.setText(dob);
+                String monthString = "";
+                if(month < 10){
+                    monthString = "0" + String.valueOf(month);
+                }
+                dob = year + "-" + monthString + "-" + dayOfMonth + "T00:00:00+10:00";
 
             }
         };

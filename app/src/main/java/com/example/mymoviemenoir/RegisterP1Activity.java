@@ -61,6 +61,8 @@ public class RegisterP1Activity extends AppCompatActivity {
 //                Check if the two password are the same
                 if(passwordET.getText().toString().equals(confirmPWET.getText().toString())){
                    Intent intent = new Intent(RegisterP1Activity.this, RegisterP2Activity.class);
+                   email = emailET.getText().toString();
+                   password = passwordET.getText().toString();
                    intent.putExtra("USERNAME", email);
                    intent.putExtra("PASSWORD", password);
                    startActivity(intent);

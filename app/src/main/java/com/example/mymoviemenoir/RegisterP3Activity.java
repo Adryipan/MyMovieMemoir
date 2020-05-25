@@ -3,6 +3,7 @@ package com.example.mymoviemenoir;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
+import com.example.mymoviemenoir.securitywidget.HashingFunction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +37,7 @@ public class RegisterP3Activity extends AppCompatActivity {
     private String state;
     private String email;
     private String password;
+    private NetworkConnection networkConnection = null;
 
 
 
@@ -40,6 +45,7 @@ public class RegisterP3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registerp3);
+        networkConnection = new NetworkConnection();
 
         //Get personal info for checking later
         Intent intent = this.getIntent();
@@ -99,24 +105,29 @@ public class RegisterP3Activity extends AppCompatActivity {
                 //Get current day and time
                 Date date = Calendar.getInstance().getTime();
 
-                //Show the date on the screen
-                SimpleDateFormat formatToday = new SimpleDateFormat("yyy-MM-dd");
+                //Format today
+                SimpleDateFormat formatToday = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
                 String today = formatToday.format(date);
 
                 //ADD the person to the database
-                //Need to parse the date format to yyyy-mm-dd before adding the person into the database
+                //Need to hash the password first
+                password = HashingFunction.getHash(password);
+                String[] details = {firstName, surname, gender, dob, streetAddress, postcode, state, email, password, today};
+                AddUserTask addUserTask = new AddUserTask();
+                addUserTask.execute(details);
 
-
-                Intent intent = new Intent(RegisterP3Activity.this, NavHomeActivity.class);
+                Intent intent = new Intent(RegisterP3Activity.this, MainActivity.class);
                 startActivity(intent);
 
             }
         });
+    }
 
+    private class AddUserTask extends AsyncTask<String, Void, String>{
 
-
-
-
-
+        @Override
+        protected String doInBackground(String... strings) {
+            return networkConnection.addUser(strings);
+        }
     }
 }

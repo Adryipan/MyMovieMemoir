@@ -3,9 +3,11 @@ package com.example.mymoviemenoir.neworkconnection;
 
 import com.example.mymoviemenoir.entity.Credentials;
 import com.example.mymoviemenoir.entity.Person;
+import com.example.mymoviemenoir.entity.PersonWithId;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import okhttp3.MediaType;
@@ -92,8 +94,22 @@ public class NetworkConnection {
         return results;
     }
 
+    public String getByFullNamePostcode(String firstName, String surname, String postcode){
+        final String methodPath = RESOURCE_PERSON + "findByFullNamePostcode/" + firstName + "/" + surname + "/" + postcode;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return results;
+    }
+
     public String addUser(String[] details){
-        Person user = new Person(details[0], details[1],details[2], details[3], details[4], details[5], details[6], details[7]);
+        Person user = new Person(details[0], details[1], details[2], details[3], details[4], details[5], details[6]);
         //Construct the json
         Gson gson = new Gson();
         String userJson = gson.toJson(user);
@@ -101,24 +117,43 @@ public class NetworkConnection {
         final String methodPath = RESOURCE_PERSON;
         RequestBody body = RequestBody.create(userJson, JSON);
         Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+        String id = "";
         try{
             Response response = client.newCall(request).execute();
             strResponse = response.body().string();
+            getByFullNamePostcode(details[0], details[1], details[5]);
+            JSONArray jsonArray = new JSONArray(results);
+            JSONObject json = jsonArray.getJSONObject(0);
+            id = json.getString("userId");
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        String[] credentials = {id, details[7], details[8], details[9], details[0], details[1], details[5]};
+        addCredentials(credentials);
 
         return strResponse;
     }
 
     public String addCredentials(String[] details){
-        Credentials credentials = new Credentials(details[0],details[1],details[2], details[3]);
+        Credentials credentials = null;
+        try{
+            getByFullNamePostcode(details[4], details[5], details[6]);
+            JSONArray jsonArray = new JSONArray(results);
+            JSONObject json = jsonArray.getJSONObject(0);
+            PersonWithId thisPerson = new PersonWithId(json.getString("firstName"),
+                    json.getString("surname"), json.getString("gender"), json.getString("dob"),
+                    json.getString("streetAddress"), json.getString("postcode"), json.getString("stateCode"), json.getString("userId"));
+            credentials = new Credentials(thisPerson, details[1],details[2], details[3]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //Construct the json
         Gson gson = new Gson();
         String userJson = gson.toJson(credentials);
         String strResponse = "";
-        final String methodPath = RESOURCE_PERSON;
+        final String methodPath = RESOURCE_CREDENTIAL;
         RequestBody body = RequestBody.create(userJson, JSON);
         Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
         try{
@@ -127,9 +162,7 @@ public class NetworkConnection {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return strResponse;
-
     }
 
 }
