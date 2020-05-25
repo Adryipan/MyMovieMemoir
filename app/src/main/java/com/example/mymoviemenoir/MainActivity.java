@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
@@ -64,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, NavHomeActivity.class);
                 intent.putExtra("USERID", userId);
                 startActivity(intent);
+            }else{
+                CharSequence message = "Username and Password not matched.";
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP, 0,0);
+                toast.show();
             }
         }
     }
