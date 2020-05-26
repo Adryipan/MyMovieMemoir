@@ -14,7 +14,7 @@ public class WatchlistRepository {
 
     private WatchlistDAO dao;
     private LiveData<List<MOVIE>> allMovie;
-    private MOVIE movie;
+    private LiveData<MOVIE> movie;
 
     public WatchlistRepository(Application application){
         WatchlistDB db = WatchlistDB.getInstance(application);
@@ -57,18 +57,29 @@ public class WatchlistRepository {
         });
     }
 
-    public MOVIE findByID(final int mid){
+    public LiveData<MOVIE> findByID(final int mid){
         WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                MOVIE runMOVIE = dao.findByID(mid);
+                LiveData<MOVIE> runMOVIE = dao.findByID(mid);
                 setMovie(runMOVIE);
             }
         });
         return movie;
     }
 
-    public void setMovie(MOVIE movie) {
+    public LiveData<MOVIE> findByDetails(final String movieName, final String releaseDate, final String timeAdded){
+        WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                LiveData<MOVIE> runMOVIE = dao.findByDetails(movieName, releaseDate, timeAdded);
+                setMovie(runMOVIE);
+            }
+        });
+        return movie;
+    }
+
+    public void setMovie(LiveData<MOVIE> movie) {
         this.movie = movie;
     }
 }

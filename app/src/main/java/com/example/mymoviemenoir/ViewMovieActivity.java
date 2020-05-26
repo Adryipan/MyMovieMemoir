@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MovieViewActivity extends AppCompatActivity {
+public class ViewMovieActivity extends AppCompatActivity {
 
     private Button watchListBtn;
     private Button menoirBtn;
@@ -75,7 +75,7 @@ public class MovieViewActivity extends AppCompatActivity {
                 //Call Room
                 MOVIE roomMOVIE = new MOVIE(thisMovie.getMovieName(), thisMovie.getReleaseDate(), timeAdded);
                 watchlistViewModel.insert(roomMOVIE);
-                Toast.makeText(MovieViewActivity.this, thisMovie.getMovieName() + " added to Watchlist.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewMovieActivity.this, thisMovie.getMovieName() + " added to Watchlist.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -85,7 +85,7 @@ public class MovieViewActivity extends AppCompatActivity {
         menoirBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MovieViewActivity.this, AddToMemoirActivity.class);
+                Intent intent = new Intent(ViewMovieActivity.this, AddToMemoirActivity.class);
                 intent.putExtra("MOVIE", thisMovie.getMovieName());
                 intent.putExtra("RELEASE", thisMovie.getReleaseDate());
                 startActivity(intent);

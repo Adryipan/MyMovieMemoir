@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymoviemenoir.MovieViewActivity;
+import com.example.mymoviemenoir.ViewMovieActivity;
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.model.SearchMovieResult;
 import com.squareup.picasso.Picasso;
@@ -78,10 +78,10 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
                 .into(imPoster);
         //Set view movie button
         TextView tvViewMovie = ViewHolder.viewMovie;
-        tvViewMovie.setOnClickListener(new View.OnClickListener() {
+        ViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MovieViewActivity.class);
+                Intent intent = new Intent(context, ViewMovieActivity.class);
                 intent.putExtra("MOVIE NAME", movie.getMovieName());
                 intent.putExtra("IMDB ID", movie.getImdbID());
                 context.startActivity(intent);
@@ -89,7 +89,6 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
         });
 
     }
-
 
 
     @Override

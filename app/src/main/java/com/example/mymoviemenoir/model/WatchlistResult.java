@@ -1,26 +1,15 @@
 package com.example.mymoviemenoir.model;
 
+import com.example.mymoviemenoir.RoomEntity.MOVIE;
+
 public class WatchlistResult {
-    private String movieName;
-    private String releaseDate;
-    private String timeAdded;
+    private MOVIE movie;
 
-    public WatchlistResult(String movieName, String releaseDate, String timeAdded) {
-        this.movieName = movieName;
-        this.releaseDate = releaseDate;
-        this.timeAdded = timeAdded;
+    public WatchlistResult(MOVIE movie) {
+        this.movie = movie;
     }
 
-    public String getMovieName() {
-        return movieName;
+    public MOVIE getMovie() {
+        return movie;
     }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getTimeAdded() {
-        return timeAdded;
-    }
-
 }

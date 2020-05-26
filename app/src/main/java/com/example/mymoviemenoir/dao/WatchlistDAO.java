@@ -20,7 +20,10 @@ public interface WatchlistDAO {
     void updateWatchlistByID(int mid, String movieName, String releaseDate, String timeAdded);
 
     @Query("SELECT * FROM MOVIE WHERE mid = :mid LIMIT 1")
-    MOVIE findByID(int mid);
+    LiveData<MOVIE> findByID(int mid);
+
+    @Query("SELECT * FROM MOVIE WHERE movie_name=:movieName AND release_date=:releaseDate AND time_added=:timeAdded LIMIT 1")
+    LiveData<MOVIE> findByDetails(String movieName, String releaseDate, String timeAdded);
 
     @Insert
     long insert(MOVIE movie);

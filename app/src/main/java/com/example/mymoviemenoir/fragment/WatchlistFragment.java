@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,6 +31,8 @@ public class WatchlistFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private List<WatchlistResult> movies;
     private WatchlistViewModel watchlistViewModel;
+    private Button deleteBtn;
+    private Button memoirBtn;
 
     public WatchlistFragment(){
     }
@@ -50,12 +54,8 @@ public class WatchlistFragment extends Fragment {
             @Override
             public void onChanged(List<MOVIE> moviesResult) {
                 for(MOVIE thisMOVIE : moviesResult){
-                    String movieName = thisMOVIE.getMovieName();
-                    String releaseDate = thisMOVIE.getReleaseDate();
-                    String timeAdded = thisMOVIE.getTimeAdded();
-
                     //Add all the movies from room to the rv model
-                    WatchlistResult thisMovieResult = new WatchlistResult(movieName, releaseDate, timeAdded);
+                    WatchlistResult thisMovieResult = new WatchlistResult(thisMOVIE);
                     movies.add(thisMovieResult);
                 }
 
@@ -66,10 +66,23 @@ public class WatchlistFragment extends Fragment {
 
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
+            }
+        });
+
+        //Delete the watchlist record
+        deleteBtn = view.findViewById(R.id.deleteBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WatchlistResult selectedMovie = adapter.getSelectedItem();
+                watchlistViewModel.delete(selectedMovie.getMovie());
+                adapter.deleteDate();
+                Toast.makeText(WatchlistFragment.this.getContext(), selectedMovie.getMovie().getMovieName() + " deleted.", Toast.LENGTH_SHORT).show();
 
             }
         });
 
+        //Add to memoir
 
 
         return view;

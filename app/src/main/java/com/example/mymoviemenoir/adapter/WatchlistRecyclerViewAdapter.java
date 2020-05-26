@@ -1,6 +1,7 @@
 package com.example.mymoviemenoir.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
         }
 
     private List<WatchlistResult> watchlistResults;
+    private int selectedPosition = -1;
 
     public WatchlistRecyclerViewAdapter(List<WatchlistResult> movies){
         watchlistResults = movies;
@@ -48,19 +50,41 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WatchlistRecyclerViewAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull WatchlistRecyclerViewAdapter.ViewHolder viewHolder, final int position) {
+        if(selectedPosition == position){
+            viewHolder.itemView.setBackgroundColor(Color.parseColor("#FF00FF48"));
+        }else{
+            viewHolder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedPosition = position;
+                notifyDataSetChanged();
+            }
+        });
         final WatchlistResult movie = watchlistResults.get(position);
         TextView tvMovieName = viewHolder.movieNameTV;
-        tvMovieName.setText(movie.getMovieName());
+        tvMovieName.setText(movie.getMovie().getMovieName());
         TextView tvReleaseDate = viewHolder.releaseDateTV;
-        tvReleaseDate.setText(movie.getReleaseDate());
+        tvReleaseDate.setText(movie.getMovie().getReleaseDate());
         TextView tvTimeAdded = viewHolder.timeAddedTV;
-        tvTimeAdded.setText(movie.getReleaseDate());
+        tvTimeAdded.setText(movie.getMovie().getReleaseDate());
+
     }
 
     @Override
     public int getItemCount() {
         return watchlistResults.size();
+    }
+
+    public WatchlistResult getSelectedItem(){
+        return watchlistResults.get(selectedPosition);
+    }
+
+    public void deleteDate(){
+        watchlistResults.remove(selectedPosition);
+        notifyDataSetChanged();
     }
 
 

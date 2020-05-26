@@ -41,8 +41,13 @@ public class WatchlistViewModel extends ViewModel {
         watchlistRepository.updateWatchlistByID(mid, movieName, releaseDate, timeAdded);
     }
 
-    public MOVIE findByID(int mid){
+    public LiveData<MOVIE> findByID(int mid){
         return watchlistRepository.findByID(mid);
     }
+
+    public LiveData<MOVIE> findByDetails(String movieName, String releaseDate, String timeAdded){
+        return watchlistRepository.findByDetails(movieName, releaseDate, timeAdded);
+    }
+
 
 }
