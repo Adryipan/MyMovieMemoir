@@ -11,9 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/view_movie"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/watchlistRecyclerView" />
 
     <TextView
         android:id="@+id/textView7"
@@ -31,11 +33,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/watchlistRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="520dp"
+        android:layout_height="428dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -46,7 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/watchlistRecyclerView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

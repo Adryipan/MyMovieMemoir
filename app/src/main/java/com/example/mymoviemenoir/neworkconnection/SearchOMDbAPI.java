@@ -1,5 +1,9 @@
 package com.example.mymoviemenoir.neworkconnection;
 
+import com.example.mymoviemenoir.entity.Movie;
+
+import org.json.JSONObject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,7 +24,29 @@ public class SearchOMDbAPI {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return result;
     }
+
+    public static Movie getResultMovie(String result){
+
+        //extract the info of the movie
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            String movieName = jsonObject.getString("Title");
+            String rating = jsonObject.getString("imdbRating");
+            String cast = jsonObject.getString("Actors");
+            String releaseDate = jsonObject.getString("Released");
+            String country = jsonObject.getString("Country");
+            String plot = jsonObject.getString("Plot");
+            String genre = jsonObject.getString("Genre");
+            String director = jsonObject.getString("Director");
+            Movie thisMovie = new Movie(movieName, rating, genre, cast, releaseDate, country, director, plot);
+            return thisMovie;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

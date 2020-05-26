@@ -38,12 +38,20 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //LiveData and view Model
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+    //Recycler view
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    //For chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //Material design
     implementation 'com.google.android.material:material:1.0.0'
+    //Image downloader
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Room
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 
 
 }

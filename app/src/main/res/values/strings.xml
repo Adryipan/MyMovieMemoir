@@ -64,5 +64,6 @@
     <string name="public_rating">Online Rating</string>
 
     <string name="report_title">Report</string>
+    <string name="loading_message">Wait, I\'m asking around</string>
 
 </resources>

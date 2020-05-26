@@ -52,7 +52,6 @@ public class SearchFragment extends Fragment {
                         return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"3"});
                     }
 
-
                     @Override
                     protected void onPostExecute(String result) {
                         ArrayList<SearchMovieResult> searchMovieResults = SearchGoogleAPI.getNameYearImage(result);
