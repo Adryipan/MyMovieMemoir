@@ -12,7 +12,7 @@
         android:title="Movie Menoir"/>
     <item
         android:id="@+id/watchlistScreen"
-        android:title="watchlist"/>
+        android:title="Watchlist"/>
     <item
         android:id="@+id/reportsScreen"
         android:title="Reports"/>

@@ -10,8 +10,9 @@ public class Movie {
     private String country;
     private String directors;
     private String plot;
+    private String imdbID;
 
-    public Movie(String movieName, String rating, String genre, String cast, String releaseDate, String country, String directors, String plot) {
+    public Movie(String movieName, String rating, String genre, String cast, String releaseDate, String country, String directors, String plot, String imdbID) {
         this.movieName = movieName;
         this.rating = rating;
         this.genre = genre;
@@ -20,6 +21,15 @@ public class Movie {
         this.country = country;
         this.directors = directors;
         this.plot = plot;
+        this.imdbID = imdbID;
+    }
+
+    public String getImdbID() {
+        return imdbID;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
     }
 
     public String getMovieName() {

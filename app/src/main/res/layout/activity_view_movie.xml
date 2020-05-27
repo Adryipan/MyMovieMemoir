@@ -103,7 +103,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/movie_view_watchlist"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/twittRecyclerView" />
 
@@ -113,7 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/movie_view_memoir"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/twittRecyclerView" />
 

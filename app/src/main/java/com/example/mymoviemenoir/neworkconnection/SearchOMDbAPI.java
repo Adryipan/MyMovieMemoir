@@ -41,7 +41,8 @@ public class SearchOMDbAPI {
             String plot = jsonObject.getString("Plot");
             String genre = jsonObject.getString("Genre");
             String director = jsonObject.getString("Director");
-            Movie thisMovie = new Movie(movieName, rating, genre, cast, releaseDate, country, director, plot);
+            String imdbID = jsonObject.getString("imdbID");
+            Movie thisMovie = new Movie(movieName, rating, genre, cast, releaseDate, country, director, plot, imdbID);
             return thisMovie;
         } catch (Exception e) {
             e.printStackTrace();

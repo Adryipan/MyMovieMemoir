@@ -15,7 +15,8 @@
     <string name="female">Female</string>
     <string name="next">Next</string>
     <string name="dob">Date of Birth</string>
-    <string name="pick_a_date">Click to pick a date</string>
+    <string name="pick_a_date">Pick a date</string>
+    <string name="pick_a_time">Pick a time</string>
     <string name="register_p2_title">Where do you live?</string>
     <string name="street_address">Street Address</string>
     <string name="postcode">Postcode</string>

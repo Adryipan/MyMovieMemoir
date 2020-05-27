@@ -80,7 +80,6 @@ public class RegisterP3Activity extends AppCompatActivity {
                 if(selectedState != null){
                     state = selectedState;
                 }
-
             }
 
             @Override
@@ -124,7 +123,6 @@ public class RegisterP3Activity extends AppCompatActivity {
     }
 
     private class AddUserTask extends AsyncTask<String, Void, String>{
-
         @Override
         protected String doInBackground(String... strings) {
             return networkConnection.addUser(strings);

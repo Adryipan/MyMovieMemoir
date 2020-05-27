@@ -32,20 +32,20 @@ public class ViewMovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_view);
+        setContentView(R.layout.activity_view_movie);
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         watchlistViewModel.initialize(getApplication());
 
         Intent intent = this.getIntent();
-        String movieName = intent.getStringExtra("MOVIE NAME");
         final String imdbID = intent.getStringExtra("IMDB ID");
 
-        new AsyncTask<String, Void, String>(){
+        new AsyncTask<String, Void, String>() {
 
             @Override
             protected String doInBackground(String... strings) {
                 return SearchOMDbAPI.searchByIMDbID(imdbID);
             }
+
             @Override
             protected void onPostExecute(String result) {
                 thisMovie = SearchOMDbAPI.getResultMovie(result);
@@ -60,37 +60,44 @@ public class ViewMovieActivity extends AppCompatActivity {
                         "Cast: " + thisMovie.getCast() + "\n" +
                         "Summary: " + "\n" +
                         thisMovie.getPlot());
+
             }
         }.execute();
 
+        //Check if the caller is from Watchlist or Search movie
+        //If it is from Watchlist then disable the buttom
         //Add to watchlist
         watchListBtn = findViewById(R.id.watchlistBtn);
-        watchListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Get timestamp
-                Date currentTime = Calendar.getInstance().getTime();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String timeAdded = dateFormat.format(currentTime);
-                //Call Room
-                MOVIE roomMOVIE = new MOVIE(thisMovie.getMovieName(), thisMovie.getReleaseDate(), timeAdded);
-                watchlistViewModel.insert(roomMOVIE);
-                Toast.makeText(ViewMovieActivity.this, thisMovie.getMovieName() + " added to Watchlist.", Toast.LENGTH_SHORT).show();
+        if (intent.getBooleanExtra("DISABLE", false)) {
+            watchListBtn.setEnabled(false);
+            watchListBtn.setText("Already in list");
+        } else {
+            watchListBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Get timestamp
+                    Date currentTime = Calendar.getInstance().getTime();
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    String timeAdded = dateFormat.format(currentTime);
+                    //Call Room
+                    MOVIE roomMOVIE = new MOVIE(thisMovie.getMovieName(), thisMovie.getReleaseDate(), timeAdded, thisMovie.getImdbID());
+                    watchlistViewModel.insert(roomMOVIE);
+                    Toast.makeText(ViewMovieActivity.this, thisMovie.getMovieName() + " added to Watchlist.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-            }
-        });
+            //Add to menoir
+            menoirBtn = findViewById(R.id.memoirBtn);
+            menoirBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ViewMovieActivity.this, AddToMemoirActivity.class);
+                    intent.putExtra("MOVIE", thisMovie.getMovieName());
+                    intent.putExtra("RELEASE", thisMovie.getReleaseDate());
+                    startActivity(intent);
+                }
+            });
 
-        //Add to menoir
-        menoirBtn = findViewById(R.id.memoirBtn);
-        menoirBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewMovieActivity.this, AddToMemoirActivity.class);
-                intent.putExtra("MOVIE", thisMovie.getMovieName());
-                intent.putExtra("RELEASE", thisMovie.getReleaseDate());
-                startActivity(intent);
-            }
-        });
-
-    }
+        }
 }

@@ -12,7 +12,7 @@ import com.example.mymoviemenoir.dao.WatchlistDAO;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {MOVIE.class}, version = 2, exportSchema = false)
+@Database(entities = {MOVIE.class}, version = 3, exportSchema = false)
 public abstract class WatchlistDB extends RoomDatabase {
 
     public abstract WatchlistDAO watchlistDAO();

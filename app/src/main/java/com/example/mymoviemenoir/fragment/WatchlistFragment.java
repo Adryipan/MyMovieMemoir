@@ -1,5 +1,6 @@
 package com.example.mymoviemenoir.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.RoomEntity.MOVIE;
+import com.example.mymoviemenoir.ViewMovieActivity;
 import com.example.mymoviemenoir.adapter.WatchlistRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.WatchlistResult;
 import com.example.mymoviemenoir.viewmodel.WatchlistViewModel;
@@ -32,7 +34,7 @@ public class WatchlistFragment extends Fragment {
     private List<WatchlistResult> movies;
     private WatchlistViewModel watchlistViewModel;
     private Button deleteBtn;
-    private Button memoirBtn;
+    private Button viewMovieBtn;
 
     public WatchlistFragment(){
     }
@@ -78,11 +80,21 @@ public class WatchlistFragment extends Fragment {
                 watchlistViewModel.delete(selectedMovie.getMovie());
                 adapter.deleteDate();
                 Toast.makeText(WatchlistFragment.this.getContext(), selectedMovie.getMovie().getMovieName() + " deleted.", Toast.LENGTH_SHORT).show();
-
             }
         });
 
-        //Add to memoir
+        //View Movie
+        viewMovieBtn = view.findViewById(R.id.viewMovieBtn);
+        viewMovieBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WatchlistResult selectedMovie = adapter.getSelectedItem();
+                Intent intent = new Intent(WatchlistFragment.this.getContext(), ViewMovieActivity.class);
+                intent.putExtra("IMDB ID", selectedMovie.getMovie().getImdbID());
+                intent.putExtra("DISABLE", true);
+                startActivity(intent);
+            }
+        });
 
 
         return view;

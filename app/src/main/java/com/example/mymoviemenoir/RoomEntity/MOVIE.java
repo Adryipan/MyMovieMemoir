@@ -18,10 +18,14 @@ public class MOVIE {
     @ColumnInfo(name = "time_added")
     public String timeAdded;
 
-    public MOVIE(String movieName, String releaseDate, String timeAdded) {
+    @ColumnInfo(name = "imdb_id")
+    public String imdbID;
+
+    public MOVIE(String movieName, String releaseDate, String timeAdded, String imdbID) {
         this.movieName = movieName;
         this.releaseDate = releaseDate;
         this.timeAdded = timeAdded;
+        this.imdbID = imdbID;
     }
 
     public int getMid() {
@@ -50,5 +54,13 @@ public class MOVIE {
 
     public void setTimeAdded(String timeAdded) {
         this.timeAdded = timeAdded;
+    }
+
+    public String getImdbID() {
+        return imdbID;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
     }
 }

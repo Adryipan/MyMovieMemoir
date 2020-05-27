@@ -51,7 +51,7 @@ public class RegisterP2Activity extends AppCompatActivity {
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(
-                        RegisterP2Activity.this, android.R.style.Theme_DeviceDefault, onDateSetListener, year, month, day);
+                        RegisterP2Activity.this, onDateSetListener, year, month, day);
 
                 dialog.show();
             }
@@ -67,7 +67,11 @@ public class RegisterP2Activity extends AppCompatActivity {
                 if(month < 10){
                     monthString = "0" + String.valueOf(month);
                 }
-                dob = year + "-" + monthString + "-" + dayOfMonth + "T00:00:00+10:00";
+                String dayString = String.valueOf(dayOfMonth);
+                if(dayOfMonth < 10){
+                    dayString = "0" + dayOfMonth;
+                }
+                dob = year + "-" + monthString + "-" + dayString + "T00:00:00+10:00";
 
             }
         };
