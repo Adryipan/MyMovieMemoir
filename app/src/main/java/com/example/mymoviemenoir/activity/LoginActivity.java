@@ -1,4 +1,4 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,22 +7,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private NetworkConnection networkConnection = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         networkConnection = new NetworkConnection();
 
         Button signinBtn = findViewById(R.id.signinBtn);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterP1Activity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterP1Activity.class);
                 startActivity(intent);
 
             }
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String userId){
             if(!userId.isEmpty()) {
-                Intent intent = new Intent(MainActivity.this, NavHomeActivity.class);
+                Intent intent = new Intent(LoginActivity.this, NavHomeActivity.class);
                 intent.putExtra("USERID", userId);
                 startActivity(intent);
             }else{

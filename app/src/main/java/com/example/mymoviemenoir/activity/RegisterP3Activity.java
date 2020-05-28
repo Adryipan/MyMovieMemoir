@@ -1,4 +1,4 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
 
@@ -115,7 +116,7 @@ public class RegisterP3Activity extends AppCompatActivity {
                 AddUserTask addUserTask = new AddUserTask();
                 addUserTask.execute(details);
 
-                Intent intent = new Intent(RegisterP3Activity.this, MainActivity.class);
+                Intent intent = new Intent(RegisterP3Activity.this, LoginActivity.class);
                 startActivity(intent);
 
             }

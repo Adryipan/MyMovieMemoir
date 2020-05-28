@@ -1,17 +1,15 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 public class RegisterP1Activity extends AppCompatActivity {

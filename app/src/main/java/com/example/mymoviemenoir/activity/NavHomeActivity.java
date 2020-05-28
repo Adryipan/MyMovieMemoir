@@ -1,13 +1,18 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.fragment.HomeFragment;
 import com.example.mymoviemenoir.fragment.MapsFragment;
 import com.example.mymoviemenoir.fragment.MemoirFragment;
@@ -20,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -117,5 +123,14 @@ public class NavHomeActivity extends AppCompatActivity implements NavigationView
         //Closes the drawer after selection
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 1){
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                replaceFragment(new MapsFragment());
+            }
+        }
     }
 }

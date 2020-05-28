@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.RoomEntity.MOVIE;
-import com.example.mymoviemenoir.ViewMovieActivity;
+import com.example.mymoviemenoir.activity.ViewMovieActivity;
 import com.example.mymoviemenoir.adapter.WatchlistRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.WatchlistResult;
 import com.example.mymoviemenoir.viewmodel.WatchlistViewModel;

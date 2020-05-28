@@ -1,4 +1,4 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.RoomEntity.MOVIE;
 import com.example.mymoviemenoir.entity.Movie;
 import com.example.mymoviemenoir.neworkconnection.SearchOMDbAPI;

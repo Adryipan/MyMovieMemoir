@@ -1,4 +1,4 @@
-package com.example.mymoviemenoir;
+package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import java.text.ParseException;

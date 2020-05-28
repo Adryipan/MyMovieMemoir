@@ -139,6 +139,38 @@ public class NetworkConnection {
         return results;
     }
 
+    //Count the number of watch per postcode within the start and end date
+    //Date accepted format dd-mm-yyyy
+    public String findByIdDate(String uid, String startDate, String endDate){
+        final String methodPath = RESOURCE_MEMOIR + "findByIdDate/" + uid + "/" + startDate + "/" + endDate;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    public String countMoviePerMonth(String uid, String year){
+        final String methodPath = RESOURCE_MEMOIR + "countMoviePerMonth/" + uid + "/" + year;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     //POST queries
     public String addCredentials(String[] details){
         Credentials credentials = null;
