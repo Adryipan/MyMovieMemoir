@@ -78,14 +78,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <EditText
-            android:id="@+id/postcodeET"
+            android:id="@+id/suburbET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="@string/postcode"
+            android:hint="@string/suburb"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +113,7 @@
             android:text="@string/memoir_watch_comment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postcodeET" />
+            app:layout_constraintTop_toBottomOf="@+id/suburbET" />
 
         <EditText
             android:id="@+id/commentET"

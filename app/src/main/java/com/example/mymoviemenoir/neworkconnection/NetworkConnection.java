@@ -125,8 +125,8 @@ public class NetworkConnection {
         return results;
     }
 
-    public String getCinemaByPostcode(String cinemaPostcode){
-        final String methodPath = RESOURCE_CINEMA + "findByPostcode/" + cinemaPostcode;
+    public String getCinemaBySuburb(String cinemaSuburb){
+        final String methodPath = RESOURCE_CINEMA + "findBySuburb/" + cinemaSuburb;
         Request.Builder builder = new Request.Builder();
         builder.url(BASE_URL + methodPath);
         Request request = builder.build();
@@ -164,6 +164,20 @@ public class NetworkConnection {
             Response response = client.newCall(request).execute();
             results = response.body().string();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    //Get all cinemas from the database
+    public String getAllCinema(){
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + RESOURCE_CINEMA);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return results;
@@ -231,7 +245,7 @@ public class NetworkConnection {
 
     public String addMemoir(String[] details){
         String userResult = getUserByID(details[7]);
-        String cinemaResult = getCinemaByPostcode(details[6]);
+        String cinemaResult = getCinemaBySuburb(details[6]);
         String strResponse = "";
         try{
             //Convert the user to object
@@ -252,7 +266,7 @@ public class NetworkConnection {
             JSONObject cinemaJson = cinemaJsonArray.getJSONObject(0);
             cinema = new Cinema(cinemaJson.getString("cinemaId"),
                     cinemaJson.getString("cinemaName"),
-                    cinemaJson.getString("postcode"));
+                    cinemaJson.getString("suburb"));
 
             //Create a memoir object
             Memoir memoir = new Memoir(details[0], details[1], details[2], details[3], details[4], details[5], cinema, user);

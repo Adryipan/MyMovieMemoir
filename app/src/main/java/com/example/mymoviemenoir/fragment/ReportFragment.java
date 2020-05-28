@@ -210,8 +210,8 @@ public class ReportFragment extends Fragment {
                         JSONObject thisLocation = jsonArray.getJSONObject(i);
                         int thisCount = thisLocation.getInt("Count");
                         float thisPercentage = ((float)thisCount / (float)total) * 100;
-                        String thisPostcode = thisLocation.getString("Postcode");
-                        PieEntry thisPieEntry = new PieEntry(thisPercentage, thisPostcode);
+                        String thisSuburb = thisLocation.getString("Suburb");
+                        PieEntry thisPieEntry = new PieEntry(thisPercentage, thisSuburb);
                         pieEntries.add(thisPieEntry);
                     }
 

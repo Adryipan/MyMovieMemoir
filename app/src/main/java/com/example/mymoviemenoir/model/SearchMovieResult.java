@@ -18,32 +18,20 @@ public class SearchMovieResult {
         return imdbID;
     }
 
-    public void setImdbID(String imdbID) {
-        this.imdbID = imdbID;
-    }
 
     public String getMovieName() {
         return movieName;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
 
     public String getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(String releaseYear) {
-        this.releaseYear = releaseYear;
-    }
 
     public String getImageLink() {
         return imageLink;
     }
 
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
-    }
 }

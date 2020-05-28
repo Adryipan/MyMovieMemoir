@@ -57,6 +57,7 @@
     <string name="memoir_watch_comment">What do you think?</string>
     <string name="comment">Comment</string>
     <string name="rating">Your rating</string>
+    <string name="suburb">Cinema suburb</string>
 
     <string name="memoir_title">My Movie Memoir</string>
     <string name="sort_by">Sort by:</string>

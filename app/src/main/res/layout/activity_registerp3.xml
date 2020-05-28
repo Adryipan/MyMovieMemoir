@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
-        android:id="@+id/postcodeET"
+        android:id="@+id/suburbET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
@@ -84,6 +84,6 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postcodeET" />
+        app:layout_constraintTop_toBottomOf="@+id/suburbET" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

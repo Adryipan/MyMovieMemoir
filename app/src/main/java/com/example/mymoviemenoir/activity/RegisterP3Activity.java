@@ -97,7 +97,7 @@ public class RegisterP3Activity extends AppCompatActivity {
             public void onClick(View v) {
                 //Get the info from the screen first
                 streetAddressET = findViewById(R.id.streetAddressET);
-                postCodeET = findViewById(R.id.postcodeET);
+                postCodeET = findViewById(R.id.suburbET);
 
                 streetAddress = streetAddressET.getText().toString();
                 postcode = postCodeET.getText().toString();

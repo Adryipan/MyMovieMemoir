@@ -25,8 +25,8 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
 
             public ViewHolder(View itemView){
                 super(itemView);
-                movieNameTV = itemView.findViewById(R.id.rv_3col_col1);
-                releaseDateTV = itemView.findViewById(R.id.rv_3vol_col2);
+                movieNameTV = itemView.findViewById(R.id.rv_3col_rb_col1);
+                releaseDateTV = itemView.findViewById(R.id.rv_3vol_rb_col2);
                 timeAddedTV = itemView.findViewById(R.id.rv_3vol_col3);
             }
 

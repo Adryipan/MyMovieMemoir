@@ -1,14 +1,17 @@
 package com.example.mymoviemenoir.entity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Cinema {
     private String cinemaId;
     private String cinemaName;
-    private String postcode;
+    private String suburb;
+    private LatLng geocode;
 
-    public Cinema(String cinemaId, String cinemaName, String postcode) {
+    public Cinema(String cinemaId, String cinemaName, String suburb) {
         this.cinemaId = cinemaId;
         this.cinemaName = cinemaName;
-        this.postcode = postcode;
+        this.suburb = suburb;
     }
 
     public String getCinemaId() {
@@ -19,7 +22,15 @@ public class Cinema {
         return cinemaName;
     }
 
-    public String getPostcode() {
-        return postcode;
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public LatLng getGeocode() {
+        return geocode;
+    }
+
+    public void setGeocode(LatLng geocode) {
+        this.geocode = geocode;
     }
 }

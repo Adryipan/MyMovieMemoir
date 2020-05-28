@@ -34,7 +34,7 @@ public class AddToMemoirActivity extends AppCompatActivity {
     
     private NetworkConnection networkConnection;
 
-    private EditText postcodeET;
+    private EditText suburbET;
     private EditText commentET;
     private TextView watchDateTV;
     private TextView watchTimeTv;
@@ -46,7 +46,7 @@ public class AddToMemoirActivity extends AppCompatActivity {
     private String releaseDate;
     private String watchDate;
     private String watchTime;
-    private String cinemaPostcode;
+    private String cinemaSuburb;
     private String comment;
     private String rating;
 
@@ -151,10 +151,10 @@ public class AddToMemoirActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Get postcode and comment
-                postcodeET = findViewById(R.id.postcodeET);
+                suburbET = findViewById(R.id.suburbET);
                 commentET = findViewById(R.id.commentET);
 
-                cinemaPostcode = postcodeET.getText().toString();
+                cinemaSuburb = suburbET.getText().toString();
                 comment = commentET.getText().toString();
 
                 //Get rating
@@ -162,7 +162,7 @@ public class AddToMemoirActivity extends AppCompatActivity {
                 rating = String.valueOf(ratingBar.getRating());
                 SharedPreferences sharedPreferences = getSharedPreferences("USERID", Context.MODE_PRIVATE);
                 String userId = sharedPreferences.getString("USERID", null);
-                String[] details = {movieName, releaseDate, rating, watchDate, watchTime, comment, cinemaPostcode, userId};
+                String[] details = {movieName, releaseDate, rating, watchDate, watchTime, comment, cinemaSuburb, userId};
                 AddMemoirTask addMemoirTask = new AddMemoirTask();
                 addMemoirTask.execute(details);
 

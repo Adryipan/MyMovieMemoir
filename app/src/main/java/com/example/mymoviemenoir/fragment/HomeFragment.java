@@ -10,7 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.adapter.TopFiveRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.TopFiveMovieResult;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
@@ -19,13 +24,22 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    NetworkConnection networkConnection = null;
-    View view = null;
+    private NetworkConnection networkConnection = null;
+    private View view = null;
+
+    private List<TopFiveMovieResult> movies;
+    private TopFiveRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -102,20 +116,24 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             try{
-                TextView topFive = view.findViewById(R.id.topFiveTV);
-                StringBuilder sb = new StringBuilder();
+                recyclerView = view.findViewById(R.id.topFiveRecyclerView);
+                movies = new ArrayList<TopFiveMovieResult>();
                 JSONArray jsonArray = new JSONArray(result);
                 int length = jsonArray.length();
                 if(length > 0){
                     for(int i = 0; i < length; i++){
                         JSONObject thisMovie = jsonArray.getJSONObject(i);
-                        String name = thisMovie.getString("Movie Name");
-                        String release = thisMovie.getString("Release Date");
-                        String rating = thisMovie.getString("Rating");
-                        sb.append(name + " " + release + " " + rating + "\n");
+                        movies.add(new TopFiveMovieResult(thisMovie.getString("Movie Name")
+                                , thisMovie.getString("Release Date")
+                                , thisMovie.getString("Rating")));
                     }
+                    adapter = new TopFiveRecyclerViewAdapter(movies);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(HomeFragment.this.getContext(), LinearLayoutManager.VERTICAL));
+                    recyclerView.setAdapter(adapter);
+                    layoutManager = new LinearLayoutManager(HomeFragment.this.getContext());
+                    recyclerView.setLayoutManager(layoutManager);
                 }
-                topFive.setText(sb.toString());
+
             }catch(Exception e){
                 e.printStackTrace();
             }

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,24 +22,32 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
+import com.example.mymoviemenoir.neworkconnection.SearchGoogleMapAPI;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private NetworkConnection networkConnection = null;
     private View view = null;
     private GoogleMap googleMap;
-    private MapFragment mapFragment;
     private MapView mapView;
     private LatLng currentLocation;
     private LocationManager locationManager;
+    private ArrayList<Cinema> cinemas;
 
     public MapsFragment() {
     }
@@ -49,6 +58,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                              Bundle savedInstanceState) {
         // Inflate the View for this fragment
         this.view = inflater.inflate(R.layout.fragment_maps, container, false);
+        //The map
+        mapView = view.findViewById(R.id.mapView);
+
+        //Get all cinema Latlng
+        //Get all cinema
+        cinemas = new ArrayList<Cinema>();
+        networkConnection = new NetworkConnection();
+        GetAllCinemaTask getAllCinemaTask = new GetAllCinemaTask();
+        getAllCinemaTask.execute();
 
 
 
@@ -61,8 +79,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             requestLocationPermission();
         }
 
-        //The map
-        mapView = view.findViewById(R.id.mapView);
+
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -72,12 +89,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        //Pin my location
         if(currentLocation != null) {
             this.googleMap.addMarker(new MarkerOptions().position(currentLocation).title("My location"));
             float zoomLevel = 12f;
             this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel));
         }
-
     }
 
     @Override
@@ -122,4 +139,70 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
+
+//    private void getGeoCode(){
+//        GetGeocodeTask getGeocodeTask = new GetGeocodeTask();
+//        for(Cinema thisCinema : cinemas){
+//            getGeocodeTask.execute(thisCinema.getSuburb());
+//        }
+//
+//    }
+
+    private class GetAllCinemaTask extends AsyncTask<Void, Void, String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return networkConnection.getAllCinema();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //Add to cinemas ArrayList
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                int numberOfItems = jsonArray.length();
+                if(numberOfItems > 0){
+                    for(int i = 0; i < numberOfItems; i++) {
+                        JSONObject thisJSONObject = jsonArray.getJSONObject(i);
+                        cinemas.add(new Cinema(thisJSONObject.getString("cinemaId"),
+                                               thisJSONObject.getString("cinemaName"),
+                                               thisJSONObject.getString("suburb")));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            getGeoCode();
+        }
+    }
+
+//    private class GetGeocodeTask extends AsyncTask<String, Void, String>{
+//
+//        @Override
+//        protected String doInBackground(String... strings) {
+//            return SearchGoogleMapAPI.getGeocode(strings[0]);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            //Set the geocode back to corresponding cinema
+//            LatLng thisCinemaLocation = SearchGoogleMapAPI.getLatLng(result);
+//            for(Cinema thisCinema: cinemas){
+//                if(thisCinema.getSuburb().toUpperCase().equals(SearchGoogleMapAPI.getSuburb(result))){
+//                    thisCinema.setGeocode(thisCinemaLocation);
+//                }
+//            }
+//
+//            //Pin cinema location
+//            if(cinemas.size() > 0){
+//                for(Cinema thisCinema : cinemas) {
+//                    googleMap.addMarker(new MarkerOptions()
+//                            .position(thisCinema.getGeocode())
+//                            .icon(BitmapDescriptorFactory
+//                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+//                            .title(thisCinema.getCinemaName()));
+//                }
+//            }
+//        }
+//    }
 }

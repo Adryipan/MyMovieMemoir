@@ -18,25 +18,15 @@ public class TopFiveMovieResult {
         this.rating = rating;
     }
 
-    public static List<TopFiveMovieResult> getResult(String queryResult){
-        List<TopFiveMovieResult> results = new ArrayList<TopFiveMovieResult>();
-        try {
-            JSONArray jsonArray = new JSONArray(queryResult);
-            int length = jsonArray.length();
-            if(length != 0){
-                for(int i = 0; i < length; i++){
-                    JSONObject thisObject = jsonArray.getJSONObject(i);
-                    String movieName = thisObject.getString("Movie Name");
-                    String date = thisObject.getString("Release Date");
-                    String rating = thisObject.getString("Rating");
-                    TopFiveMovieResult thisResult = new TopFiveMovieResult(movieName, date, rating);
-                    results.add(thisResult);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return results;
+    public String getName() {
+        return name;
     }
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getRating() {
+        return rating;
+    }
 }
