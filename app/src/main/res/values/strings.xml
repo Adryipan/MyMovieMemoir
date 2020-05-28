@@ -45,6 +45,8 @@
     <string name="release_date">Release Date</string>
     <string name="my_rating">My Rating</string>
     <string name="search">Search</string>
+    <string name="imdb_rating">IMDb Rating</string>
+    <string name="watch_date">Watch Date</string>
 
     <string name="watchlist_title">Your Watchlist</string>
     <string name="delete">Delete</string>

@@ -6,13 +6,17 @@ import com.example.mymoviemenoir.entity.Credentials;
 import com.example.mymoviemenoir.entity.Memoir;
 import com.example.mymoviemenoir.entity.Person;
 import com.example.mymoviemenoir.entity.PersonWithId;
+import com.example.mymoviemenoir.model.MemoirResult;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -181,6 +185,48 @@ public class NetworkConnection {
             e.printStackTrace();
         }
         return results;
+    }
+
+    //Get all memoir and return list of MemoirResult
+    public List<MemoirResult> getAllMemoir(String uid){
+        ArrayList<MemoirResult> memoirResults = new ArrayList<>();
+        //Get all memoir from server
+        final String methodPath = RESOURCE_MEMOIR + "findByUID/" + uid;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+            JSONArray jsonArray = new JSONArray(results);
+            int numberOfItems = jsonArray.length();
+            if(numberOfItems > 0){
+                for (int i = 0; i < numberOfItems; i++) {
+                    JSONObject thisMovie = jsonArray.getJSONObject(i);
+                    //Call SearchGoogle for the imdb id
+                    String googleResult = SearchGoogleAPI.search(thisMovie.getString("movieName"), new String[]{"num"}, new String[]{"5"});
+                    String imdbID = SearchGoogleAPI.getIMDbID(googleResult);
+
+                    //Call OMDb for image, releaseDate and Imdb rating (convert to stars)
+                    String omdbResult = SearchOMDbAPI.searchByIMDbID(imdbID);
+                    String imgLink = SearchOMDbAPI.getPosterLink(omdbResult);
+                    String releaseDate = SearchOMDbAPI.getReleaseDate(omdbResult);
+                    String onlineRating = SearchOMDbAPI.getIMDBRating(omdbResult);
+
+                    memoirResults.add(new MemoirResult(thisMovie.getString("movieName"),
+                            releaseDate, thisMovie.getString("watchDate").substring(0,10), thisMovie.getString("rating"),
+                            onlineRating, thisMovie.getString("comment"), imgLink,
+                            thisMovie.getJSONObject("cinemaId").getString("suburb")));
+
+                }
+
+            }
+
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return memoirResults;
     }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------

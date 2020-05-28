@@ -59,17 +59,17 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchMovieRecyclerViewAdapter.ViewHolder ViewHolder, int position) {
+    public void onBindViewHolder(@NonNull SearchMovieRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         final SearchMovieResult movie = searchMovieResults.get(position);
 
         //For the movie name
-        TextView tvMovieName = ViewHolder.movieNameView;
+        TextView tvMovieName = viewHolder.movieNameView;
         tvMovieName.setText(movie.getMovieName());
         //For the release year
-        TextView tvReleaseYear = ViewHolder.releaseYearView;
+        TextView tvReleaseYear = viewHolder.releaseYearView;
         tvReleaseYear.setText(movie.getReleaseYear());
         //One more for the imageview
-        ImageView imPoster = ViewHolder.posterView;
+        ImageView imPoster = viewHolder.posterView;
         Picasso.get()
                 .load(movie.getImageLink())
                 .placeholder(R.mipmap.ic_launcher)
@@ -77,8 +77,8 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
                 .centerInside()
                 .into(imPoster);
         //Set view movie button
-        TextView tvViewMovie = ViewHolder.viewMovie;
-        ViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        TextView tvViewMovie = viewHolder.viewMovie;
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ViewMovieActivity.class);

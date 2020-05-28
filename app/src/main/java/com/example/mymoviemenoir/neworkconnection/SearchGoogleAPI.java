@@ -3,6 +3,7 @@ package com.example.mymoviemenoir.neworkconnection;
 import com.example.mymoviemenoir.model.SearchMovieResult;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -89,6 +90,8 @@ public class SearchGoogleAPI {
 
                         SearchMovieResult thisResult = new SearchMovieResult(movieName, releaseYear, imageLink, imdbID);
                         movieList.add(thisResult);
+
+                        break;
                     }
                 }
 
@@ -99,4 +102,28 @@ public class SearchGoogleAPI {
 
         return movieList;
     }
+
+    public static String getIMDbID(String result){
+        String imdbID = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            if(jsonArray != null && jsonArray.length() > 0) {
+                int length = jsonArray.length();
+                for (int i = 0; i < length; i++) {
+                    //Extract from metatags seems easier
+                    JSONObject metaTag = jsonArray.getJSONObject(i).getJSONObject("pagemap").getJSONArray("metatags").getJSONObject(0);
+                    //Only look at IMDB
+                    if (metaTag.getString("og:site_name").toUpperCase().equals("IMDB")) {
+                        imdbID = metaTag.getString("pageid");
+                        break;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return imdbID;
+    }
+
 }

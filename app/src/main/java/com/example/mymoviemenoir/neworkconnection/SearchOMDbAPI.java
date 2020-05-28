@@ -29,7 +29,6 @@ public class SearchOMDbAPI {
     }
 
     public static Movie getResultMovie(String result){
-
         //extract the info of the movie
         try{
             JSONObject jsonObject = new JSONObject(result);
@@ -49,5 +48,41 @@ public class SearchOMDbAPI {
             return null;
         }
     }
+
+    public static String getPosterLink(String result){
+        String imageLink = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            imageLink = jsonObject.getString("Poster");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imageLink;
+    }
+
+    public static String getReleaseDate(String result){
+        String releaseDate = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            releaseDate = jsonObject.getString("Released");
+        } catch (Exception e) {
+            releaseDate = "N/A";
+            e.printStackTrace();
+        }
+        return releaseDate;
+    }
+
+    public static String getIMDBRating(String result){
+        String rating = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            rating = jsonObject.getString("imdbRating");
+        } catch (Exception e) {
+            rating = "N/A";
+            e.printStackTrace();
+        }
+        return rating;
+    }
+
 
 }
