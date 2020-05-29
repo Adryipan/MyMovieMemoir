@@ -52,7 +52,7 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull WatchlistRecyclerViewAdapter.ViewHolder viewHolder, final int position) {
         if(selectedPosition == position){
-            viewHolder.itemView.setBackgroundColor(Color.parseColor("#FF00FF48"));
+            viewHolder.itemView.setBackgroundColor(Color.parseColor("#ffcc00"));
         }else{
             viewHolder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
         }

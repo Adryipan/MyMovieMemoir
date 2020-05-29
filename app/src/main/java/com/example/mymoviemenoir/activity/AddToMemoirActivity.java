@@ -10,19 +10,23 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -34,18 +38,21 @@ public class AddToMemoirActivity extends AppCompatActivity {
     
     private NetworkConnection networkConnection;
 
-    private EditText suburbET;
     private EditText commentET;
     private TextView watchDateTV;
     private TextView watchTimeTv;
     private RatingBar ratingBar;
     private Button cancelBtn;
     private Button submitBtn;
+    private Spinner cinemaSpinner;
+    private ArrayAdapter<Cinema> arrayAdapter;
+    private TextView addCinema;
 
     private String movieName;
     private String releaseDate;
     private String watchDate;
     private String watchTime;
+    private Cinema cinema;
     private String cinemaSuburb;
     private String comment;
     private String rating;
@@ -77,6 +84,19 @@ public class AddToMemoirActivity extends AppCompatActivity {
 
 
         networkConnection = new NetworkConnection();
+        //Setup the spinner at post execute
+        GetAllCinemaTask getAllCinemaTask = new GetAllCinemaTask();
+        getAllCinemaTask.execute();
+
+        //If the user wants to add more cinema
+        addCinema = findViewById(R.id.addCinemaTV);
+        addCinema.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(AddToMemoirActivity.this, AddCinemaActivity.class);
+                startActivityForResult(intent1, 1);
+            }
+        });
 
         //Setup the date picker widget
         watchDateTV = findViewById(R.id.watchDateTV);
@@ -145,16 +165,18 @@ public class AddToMemoirActivity extends AppCompatActivity {
             }
         };
 
+
+
         //When Submit button is clicked
         submitBtn = findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Get postcode and comment
-                suburbET = findViewById(R.id.suburbET);
-                commentET = findViewById(R.id.commentET);
+//                suburbET = findViewById(R.id.suburbET);
+//                cinemaSuburb = suburbET.getText().toString();
 
-                cinemaSuburb = suburbET.getText().toString();
+                commentET = findViewById(R.id.commentET);
                 comment = commentET.getText().toString();
 
                 //Get rating
@@ -162,6 +184,7 @@ public class AddToMemoirActivity extends AppCompatActivity {
                 rating = String.valueOf(ratingBar.getRating());
                 SharedPreferences sharedPreferences = getSharedPreferences("USERID", Context.MODE_PRIVATE);
                 String userId = sharedPreferences.getString("USERID", null);
+                cinemaSuburb = cinema.getSuburb();
                 String[] details = {movieName, releaseDate, rating, watchDate, watchTime, comment, cinemaSuburb, userId};
                 AddMemoirTask addMemoirTask = new AddMemoirTask();
                 addMemoirTask.execute(details);
@@ -170,9 +193,30 @@ public class AddToMemoirActivity extends AppCompatActivity {
         });
         
         //When Cancel button is clicked
+        cancelBtn = findViewById(R.id.addCinemaCancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
 
 
 
+
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //Update the spinner
+                GetAllCinemaTask getAllCinemaTask = new GetAllCinemaTask();
+                getAllCinemaTask.execute();
+            }
+        }
     }
 
     private class AddMemoirTask extends AsyncTask<String, Void, String>{
@@ -183,7 +227,39 @@ public class AddToMemoirActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(AddToMemoirActivity.this, "Memoir of added", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
         }
     }
+
+    private class GetAllCinemaTask extends AsyncTask<Void, Void, ArrayList<Cinema>>{
+
+        @Override
+        protected ArrayList<Cinema> doInBackground(Void... voids) {
+            return networkConnection.getAllCinema();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Cinema> cinemas) {
+            cinemas.add(0, new Cinema(0, "Nothing selected", "pick a place or add one"));
+            cinemaSpinner = findViewById(R.id.cinemaSpinner);
+            arrayAdapter = new ArrayAdapter<Cinema>(AddToMemoirActivity.this, android.R.layout.simple_spinner_dropdown_item, cinemas);
+            cinemaSpinner.setAdapter(arrayAdapter);
+            cinemaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(position != 0) {
+                        Cinema selectedCinema = (Cinema) parent.getItemAtPosition(position);
+                        cinema = selectedCinema;
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+    }
+
+
 }

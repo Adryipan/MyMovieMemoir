@@ -37,9 +37,22 @@ public class RegisterP1Activity extends AppCompatActivity {
                 emailET = findViewById(R.id.emailET);
                 passwordET = findViewById(R.id.passwordET);
                 confirmPWET = findViewById(R.id.confirmpwET);
-                //Check if the user exist
-                GetByUsernameTask checkEmail = new GetByUsernameTask();
-                checkEmail.execute(emailET.getText().toString());
+                String email = emailET.getText().toString();
+                if(email.trim().length() > 0){
+                    if(passwordET.getText().toString().trim().length() > 0) {
+                        if(confirmPWET.getText().toString().trim().length() > 0) {
+                            //Check if the user exist
+                            GetByUsernameTask checkEmail = new GetByUsernameTask();
+                            checkEmail.execute(email);
+                        }else{
+                            confirmPWET.setError("Please retype your password");
+                        }
+                    }else{
+                        passwordET.setError("Password must not be empty");
+                    }
+                }else{
+                    emailET.setError("Username must not be empty");
+                }
             }
         });
     }
@@ -56,7 +69,7 @@ public class RegisterP1Activity extends AppCompatActivity {
         protected void onPostExecute(String response){
             //If this username does not exist
             if(response.length() == 2){
-//                Check if the two password are the same
+                //Check if the two password are the same
                 if(passwordET.getText().toString().equals(confirmPWET.getText().toString())){
                    Intent intent = new Intent(RegisterP1Activity.this, RegisterP2Activity.class);
                    email = emailET.getText().toString();
@@ -64,7 +77,6 @@ public class RegisterP1Activity extends AppCompatActivity {
                    intent.putExtra("USERNAME", email);
                    intent.putExtra("PASSWORD", password);
                    startActivity(intent);
-
                 }else{
                     //Password check fails
                     String errorString = "Password does not match. Please try again.";

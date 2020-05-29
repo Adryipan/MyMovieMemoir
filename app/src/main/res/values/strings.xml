@@ -47,6 +47,16 @@
     <string name="search">Search</string>
     <string name="imdb_rating">IMDb Rating</string>
     <string name="watch_date">Watch Date</string>
+    <string name="genre">Genre</string>
+    <string name="country">Country</string>
+    <string name="directed_by">Directed by</string>
+    <string name="cast">Cast</string>
+    <string name="summary">Summary</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="add_to_memoir_add_cinema">Not on the list? Click here to add it</string>
+    <string name="add_cinema_title">Add cinema</string>
+    <string name="cinema_name">Cinema name</string>
+    <string name="time_added">Time added</string>
 
     <string name="watchlist_title">Your Watchlist</string>
     <string name="delete">Delete</string>

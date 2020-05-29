@@ -11,10 +11,18 @@ public class MemoirResult {
     private float onlineRating;
     private String comment;
     private String imageLink;
+    private String cinema;
     private String suburb;
     private String genre;
+    private String country;
+    private String director;
+    private String cast;
+    private String plot;
 
-    public MemoirResult(String movieName, Date releaseDate, Date watchDate, float userRating, float onlineRating, String comment, String imageLink, String suburb, String genre) {
+    public MemoirResult(String movieName, Date releaseDate, Date watchDate
+            , float userRating, float onlineRating, String comment
+            , String imageLink, String cinema, String suburb, String genre
+            , String country, String director, String cast, String plot) {
         this.movieName = movieName;
         this.releaseDate = releaseDate;
         this.watchDate = watchDate;
@@ -22,8 +30,25 @@ public class MemoirResult {
         this.onlineRating = onlineRating;
         this.comment = comment;
         this.imageLink = imageLink;
+        this.cinema = cinema;
         this.suburb = suburb;
         this.genre = genre;
+        this.country = country;
+        this.director = director;
+        this.cast = cast;
+        this.plot = plot;
+    }
+
+    public String getCast() {
+        return cast;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public String getDirector() {
+        return director;
     }
 
     public String getMovieName() {
@@ -54,11 +79,19 @@ public class MemoirResult {
         return imageLink;
     }
 
+    public String getCinema() {
+        return cinema;
+    }
+
     public String getSuburb() {
         return suburb;
     }
 
     public String getGenre() {
         return genre;
+    }
+
+    public String getCountry() {
+        return country;
     }
 }

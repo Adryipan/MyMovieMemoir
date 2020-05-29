@@ -25,16 +25,16 @@
 
         <RatingBar
             android:id="@+id/onlineRatingBar"
-            android:layout_width="239dp"
-            android:layout_height="49dp"
-            android:layout_marginTop="5dp"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="50dp"
             android:numStars="5"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
             android:stepSize="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieNameTV" />
+            app:layout_constraintTop_toBottomOf="@+id/movieNameTV"
+            android:theme="@style/RatingBar"/>
 
         <TextView
             android:id="@+id/textView8"
@@ -78,7 +78,8 @@
                 <TextView
                     android:id="@+id/movieInfoTV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000" />
             </LinearLayout>
 
 

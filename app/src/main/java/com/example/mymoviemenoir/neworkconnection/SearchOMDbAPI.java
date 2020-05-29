@@ -33,7 +33,30 @@ public class SearchOMDbAPI {
         try{
             JSONObject jsonObject = new JSONObject(result);
             String movieName = jsonObject.getString("Title");
-            String rating = jsonObject.getString("imdbRating");
+            Double rating = jsonObject.getDouble("imdbRating");
+            float convertedOnlineRating = rating.floatValue();
+            if(convertedOnlineRating >= 9.1f){
+                convertedOnlineRating = 5f;
+            }else if(convertedOnlineRating >= 8.2f && convertedOnlineRating <= 9f){
+                convertedOnlineRating = 4.5f;
+            }else if(convertedOnlineRating >= 7.3f && convertedOnlineRating <= 9.1f){
+                convertedOnlineRating = 4f;
+            }else if(convertedOnlineRating >= 6.4f && convertedOnlineRating <= 7.2f){
+                convertedOnlineRating = 3.5f;
+            }else if(convertedOnlineRating >= 5.5f && convertedOnlineRating <= 6.3f){
+                convertedOnlineRating = 3f;
+            }else if(convertedOnlineRating >= 4.6f && convertedOnlineRating <= 5.4f){
+                convertedOnlineRating = 2.5f;
+            }else if(convertedOnlineRating >= 3.7f && convertedOnlineRating <= 4.5f){
+                convertedOnlineRating = 2f;
+            }else if(convertedOnlineRating >= 2.8f && convertedOnlineRating <= 3.6f){
+                convertedOnlineRating = 1.5f;
+            }else if(convertedOnlineRating >= 1.9f && convertedOnlineRating <= 2.7f){
+                convertedOnlineRating = 1f;
+            }else if(convertedOnlineRating >= 1f && convertedOnlineRating <= 1.8f){
+                convertedOnlineRating = 0.5f;
+            }
+
             String cast = jsonObject.getString("Actors");
             String releaseDate = jsonObject.getString("Released");
             String country = jsonObject.getString("Country");
@@ -41,7 +64,7 @@ public class SearchOMDbAPI {
             String genre = jsonObject.getString("Genre");
             String director = jsonObject.getString("Director");
             String imdbID = jsonObject.getString("imdbID");
-            Movie thisMovie = new Movie(movieName, rating, genre, cast, releaseDate, country, director, plot, imdbID);
+            Movie thisMovie = new Movie(movieName, String.valueOf(convertedOnlineRating), genre, cast, releaseDate, country, director, plot, imdbID);
             return thisMovie;
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +117,54 @@ public class SearchOMDbAPI {
             e.printStackTrace();
         }
         return genre;
+    }
+
+    public static String getCountry(String result){
+        String country = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            country = jsonObject.getString("Country");
+        } catch (Exception e) {
+            country = "N/A";
+            e.printStackTrace();
+        }
+        return country;
+    }
+
+    public static String getDirector (String result){
+        String director = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            director = jsonObject.getString("Director");
+        } catch (Exception e) {
+            director = "N/A";
+            e.printStackTrace();
+        }
+        return director;
+    }
+
+    public static String getPlot(String result){
+        String plot = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            plot = jsonObject.getString("Plot");
+        } catch (Exception e) {
+            plot = "N/A";
+            e.printStackTrace();
+        }
+        return plot;
+    }
+
+    public static String getCast(String result){
+        String cast = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            cast = jsonObject.getString("Actors");
+        } catch (Exception e) {
+            cast = "N/A";
+            e.printStackTrace();
+        }
+        return cast;
     }
 
 }

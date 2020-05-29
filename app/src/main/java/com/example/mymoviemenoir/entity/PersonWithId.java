@@ -8,9 +8,9 @@ public class PersonWithId {
     String streetAddress;
     String postcode;
     String stateCode;
-    String userId;
+    int userId;
 
-    public PersonWithId(String firstName, String surname, String gender, String dob, String streetAddress, String postcode, String stateCode, String userId) {
+    public PersonWithId(String firstName, String surname, String gender, String dob, String streetAddress, String postcode, String stateCode, int userId) {
         this.firstName = firstName;
         this.surname = surname;
         this.gender = gender;
@@ -77,7 +77,7 @@ public class PersonWithId {
         this.stateCode = stateCode;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 

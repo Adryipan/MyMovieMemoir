@@ -11,6 +11,7 @@ import com.example.mymoviemenoir.model.MemoirResult;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -181,7 +182,7 @@ public class NetworkConnection {
         return results;
     }
 
-    //Get all cinemas from the database
+    //Get all cinemas with Geocode from the database
     public ArrayList<MapCinema> getAllCinemaWithGeoCode(){
         ArrayList<MapCinema> cinemaResult = new ArrayList<>();
         //Get all cinema from server
@@ -201,12 +202,35 @@ public class NetworkConnection {
                     LatLng geocode = SearchGoogleMapAPI.getLatLng(googleMapResult);
 
                     //Add this object to the list
-                    cinemaResult.add(new MapCinema(thisCinema.getString("cinemaId"),
+                    cinemaResult.add(new MapCinema(thisCinema.getInt("cinemaId"),
                             thisCinema.getString("cinemaName"), thisCinema.getString("suburb"),
                             geocode));
                 }
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cinemaResult;
+    }
+
+    //Get all cinema from database
+    public ArrayList<Cinema> getAllCinema(){
+        ArrayList<Cinema> cinemaResult = new ArrayList<>();
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + RESOURCE_CINEMA);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+            JSONArray jsonArray = new JSONArray(results);
+            int numberOfItems = jsonArray.length();
+            if(numberOfItems > 0){
+                for(int i = 0; i < numberOfItems; i++){
+                    JSONObject thisCinema = jsonArray.getJSONObject(i);
+                    cinemaResult.add(new Cinema(thisCinema.getInt("cinemaId"), thisCinema.getString("cinemaName"), thisCinema.getString("suburb")));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,13 +281,44 @@ public class NetworkConnection {
                         e.printStackTrace();
                     }
 
+                    String country = SearchOMDbAPI.getCountry(omdbResult);
+                    String director = SearchOMDbAPI.getDirector(omdbResult);
+                    String cast = SearchOMDbAPI.getCast(omdbResult);
+                    String plot = SearchOMDbAPI.getPlot(omdbResult);
+
+                    float convertedOnlineRating = 0f;
+                    if (!onlineRating.equals("N/A")) {
+                        convertedOnlineRating = Float.parseFloat(onlineRating);
+                        if(convertedOnlineRating >= 9.1f){
+                            convertedOnlineRating = 5f;
+                        }else if(convertedOnlineRating >= 8.2f && convertedOnlineRating <= 9f){
+                            convertedOnlineRating = 4.5f;
+                        }else if(convertedOnlineRating >= 7.3f && convertedOnlineRating <= 9.1f){
+                            convertedOnlineRating = 4f;
+                        }else if(convertedOnlineRating >= 6.4f && convertedOnlineRating <= 7.2f){
+                            convertedOnlineRating = 3.5f;
+                        }else if(convertedOnlineRating >= 5.5f && convertedOnlineRating <= 6.3f){
+                            convertedOnlineRating = 3f;
+                        }else if(convertedOnlineRating >= 4.6f && convertedOnlineRating <= 5.4f){
+                            convertedOnlineRating = 2.5f;
+                        }else if(convertedOnlineRating >= 3.7f && convertedOnlineRating <= 4.5f){
+                            convertedOnlineRating = 2f;
+                        }else if(convertedOnlineRating >= 2.8f && convertedOnlineRating <= 3.6f){
+                            convertedOnlineRating = 1.5f;
+                        }else if(convertedOnlineRating >= 1.9f && convertedOnlineRating <= 2.7f){
+                            convertedOnlineRating = 1f;
+                        }else if(convertedOnlineRating >= 1f && convertedOnlineRating <= 1.8f){
+                            convertedOnlineRating = 0.5f;
+                        }
+                    }
+
 
                     memoirResults.add(new MemoirResult(thisMovie.getString("movieName"),
                             new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate),
                             new SimpleDateFormat("yyyy-MM-dd").parse(thisMovie.getString("watchDate").substring(0,10))
                             , Float.parseFloat(thisMovie.getString("rating")),
-                            Float.parseFloat(onlineRating), thisMovie.getString("comment"), imgLink,
-                            thisMovie.getJSONObject("cinemaId").getString("suburb"), genre));
+                            convertedOnlineRating, thisMovie.getString("comment"), imgLink, thisMovie.getJSONObject("cinemaId").getString("cinemaName"),
+                            thisMovie.getJSONObject("cinemaId").getString("suburb"), genre, country, director, cast, plot));
                 }
 
             }
@@ -286,7 +341,7 @@ public class NetworkConnection {
             JSONObject json = jsonArray.getJSONObject(0);
             PersonWithId thisPerson = new PersonWithId(json.getString("firstName"),
                     json.getString("surname"), json.getString("gender"), json.getString("dob"),
-                    json.getString("streetAddress"), json.getString("postcode"), json.getString("stateCode"), json.getString("userId"));
+                    json.getString("streetAddress"), json.getString("postcode"), json.getString("stateCode"), json.getInt("userId"));
             credentials = new Credentials(thisPerson, details[1],details[2], details[3]);
         }catch (Exception e){
             e.printStackTrace();
@@ -350,15 +405,16 @@ public class NetworkConnection {
                     userJson.getString("streetAddress"),
                     userJson.getString("postcode"),
                     userJson.getString("stateCode"),
-                    userJson.getString("userId"));
+                    userJson.getInt("userId"));
 
             //Convert the cinema to object
             Cinema cinema;
             JSONArray cinemaJsonArray = new JSONArray(cinemaResult);
             JSONObject cinemaJson = cinemaJsonArray.getJSONObject(0);
-            cinema = new Cinema(cinemaJson.getString("cinemaId"),
+            cinema = new Cinema(cinemaJson.getInt("cinemaId"),
                     cinemaJson.getString("cinemaName"),
                     cinemaJson.getString("suburb"));
+
 
             //Create a memoir object
             Memoir memoir = new Memoir(details[0], details[1], details[2], details[3], details[4], details[5], cinema, user);
@@ -369,6 +425,22 @@ public class NetworkConnection {
             final String methodPath = RESOURCE_MEMOIR;
             RequestBody body = RequestBody.create(memoirJson, JSON);
             Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+            Response response = client.newCall(request).execute();
+            strResponse = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strResponse;
+    }
+
+    public String addCinema(String cinemaName, String suburb){
+        String strResponse = "";
+        String jsonString = "{ \"cinemaName\":\"" + cinemaName + "\",\"suburb\":\"" + suburb + "\" }";
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + RESOURCE_CINEMA);
+        try{
+            RequestBody body = RequestBody.create(jsonString, JSON);
+            Request request = builder.post(body).build();
             Response response = client.newCall(request).execute();
             strResponse = response.body().string();
         } catch (Exception e) {

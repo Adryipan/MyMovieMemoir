@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +30,7 @@ public class ViewMovieActivity extends AppCompatActivity {
     private Button menoirBtn;
     private Movie thisMovie;
     private WatchlistViewModel watchlistViewModel;
+
 
 
     @Override
@@ -52,13 +55,15 @@ public class ViewMovieActivity extends AppCompatActivity {
                 thisMovie = SearchOMDbAPI.getResultMovie(result);
                 TextView movieNameTV = findViewById(R.id.movieNameTV);
                 TextView movieInfoTV = findViewById(R.id.movieInfoTV);
+                RatingBar ratingBar = findViewById(R.id.onlineRatingBar);
 
+                ratingBar.setRating(Float.valueOf(thisMovie.getRating()));
                 movieNameTV.setText(thisMovie.getMovieName());
                 movieInfoTV.setText("Genre: " + thisMovie.getGenre() + "\n" +
                         "Country: " + thisMovie.getCountry() + "\n" +
                         "Released On: " + thisMovie.getReleaseDate() + "\n" +
                         "Directed by: " + thisMovie.getDirectors() + "\n" +
-                        "Cast: " + thisMovie.getCast() + "\n" +
+                        "Cast: " + thisMovie.getCast() + "\n\n" +
                         "Summary: " + "\n" +
                         thisMovie.getPlot());
 
@@ -96,9 +101,18 @@ public class ViewMovieActivity extends AppCompatActivity {
                     Intent intent = new Intent(ViewMovieActivity.this, AddToMemoirActivity.class);
                     intent.putExtra("MOVIE", thisMovie.getMovieName());
                     intent.putExtra("RELEASE", thisMovie.getReleaseDate());
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
             });
-
         }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            Toast.makeText(this, "Memoir Added", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Cannot add to memoir", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

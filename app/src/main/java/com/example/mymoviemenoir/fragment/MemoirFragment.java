@@ -23,7 +23,6 @@ import com.example.mymoviemenoir.adapter.MemoirRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.MemoirResult;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -44,7 +43,7 @@ public class MemoirFragment extends Fragment {
     private TextView sortByWatchDateTV;
     private TextView sortByYourRatingTV;
     private TextView sortByOnlineRatingTV;
-    List<MemoirResult> filteredResult;
+    private List<MemoirResult> filteredResult;
 
 
     public MemoirFragment() {
@@ -81,6 +80,7 @@ public class MemoirFragment extends Fragment {
                 {
                     filteredResult = memoirs;
                 }else{
+                    filteredResult = new ArrayList<>();
                     for(MemoirResult thisMemoir : memoirs){
                         if(thisMemoir.getGenre().toUpperCase().trim().equals(selectedGenre.toUpperCase().trim())){
                             filteredResult.add(thisMemoir);
@@ -88,7 +88,7 @@ public class MemoirFragment extends Fragment {
                     }
                 }
 
-                adapter = new MemoirRecyclerViewAdapter(filteredResult);
+                adapter = new MemoirRecyclerViewAdapter(filteredResult, MemoirFragment.this.getContext());
                 recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                         LinearLayoutManager.VERTICAL));
                 recyclerView.setAdapter(adapter);
@@ -109,7 +109,7 @@ public class MemoirFragment extends Fragment {
                         .sorted(Comparator.comparing(MemoirResult::getWatchDate))
                         .collect(Collectors.toList());
 
-                adapter = new MemoirRecyclerViewAdapter(sortedList);
+                adapter = new MemoirRecyclerViewAdapter(sortedList, MemoirFragment.this.getContext());
                 recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                         LinearLayoutManager.VERTICAL));
                 recyclerView.setAdapter(adapter);
@@ -126,7 +126,7 @@ public class MemoirFragment extends Fragment {
                         .sorted(Comparator.comparing(MemoirResult::getUserRating).reversed())
                         .collect(Collectors.toList());
 
-                adapter = new MemoirRecyclerViewAdapter(sortedList);
+                adapter = new MemoirRecyclerViewAdapter(sortedList, MemoirFragment.this.getContext());
                 recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                         LinearLayoutManager.VERTICAL));
                 recyclerView.setAdapter(adapter);
@@ -143,7 +143,7 @@ public class MemoirFragment extends Fragment {
                         .sorted(Comparator.comparing(MemoirResult::getOnlineRating).reversed())
                         .collect(Collectors.toList());
 
-                adapter = new MemoirRecyclerViewAdapter(sortedList);
+                adapter = new MemoirRecyclerViewAdapter(sortedList, MemoirFragment.this.getContext());
                 recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                         LinearLayoutManager.VERTICAL));
                 recyclerView.setAdapter(adapter);
@@ -187,7 +187,7 @@ public class MemoirFragment extends Fragment {
             genreSpinner.setAdapter(arrayAdapter);
 
             //For recycler view
-            adapter = new MemoirRecyclerViewAdapter(memoirs);
+            adapter = new MemoirRecyclerViewAdapter(memoirs, MemoirFragment.this.getContext());
             recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                     LinearLayoutManager.VERTICAL));
             recyclerView.setAdapter(adapter);

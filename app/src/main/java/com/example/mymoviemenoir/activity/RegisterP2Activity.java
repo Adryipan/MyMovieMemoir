@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mymoviemenoir.R;
 
@@ -54,7 +55,6 @@ public class RegisterP2Activity extends AppCompatActivity {
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         RegisterP2Activity.this, onDateSetListener, year, month, day);
-
                 dialog.show();
             }
         });
@@ -94,13 +94,26 @@ public class RegisterP2Activity extends AppCompatActivity {
                 surname = surnameET.getText().toString();
                 checkButton(v);
 
-                intent.putExtra("FIRSTNAME", fName);
-                intent.putExtra("SURNAME", surname);
-                intent.putExtra("DOB", dob);
-                intent.putExtra("GENDER", gender);
-                intent.putExtra("USERNAME", email);
-                intent.putExtra("PASSWORD", password);
-                startActivity(intent);
+                if(!fName.trim().isEmpty() && !surname.trim().isEmpty()) {
+                    checkButton(v);
+                    if(gender != null) {
+                        if(dob != null) {
+                            intent.putExtra("FIRSTNAME", fName);
+                            intent.putExtra("SURNAME", surname);
+                            intent.putExtra("DOB", dob);
+                            intent.putExtra("GENDER", gender);
+                            intent.putExtra("USERNAME", email);
+                            intent.putExtra("PASSWORD", password);
+                            startActivity(intent);
+                        }else{
+                            dobTextView.setError("Please pick a date");
+                        }
+                    }
+                }else if (fName.trim().isEmpty()){
+                    fNameET.setError("Name must not be empty");
+                }else if(surname.trim().isEmpty()){
+                    surnameET.setError("Surname must not be empty");
+                }
 
             }
         });
@@ -109,8 +122,13 @@ public class RegisterP2Activity extends AppCompatActivity {
     //Get the selected gender
     protected void checkButton(View v){
         int radioId = genderRadioGroup.getCheckedRadioButtonId();
-        genderRB = findViewById(radioId);
-        gender = genderRB.getText().toString().substring(0,1);
+        try {
+            genderRB = findViewById(radioId);
+            gender = genderRB.getText().toString().substring(0, 1);
+        } catch (Exception e) {
+            Toast.makeText(RegisterP2Activity.this, "Please select a gender.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
 
     }
 }

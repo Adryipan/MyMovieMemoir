@@ -8,8 +8,8 @@ public class Memoir {
     private String watchDate;
     private String watchTime;
     private String comment;
-    private Cinema cinema;
-    private PersonWithId person;
+    private Cinema cinemaId;
+    private PersonWithId userId;
 
     public Memoir(String movieName, String releaseDate, String rating, String watchDate, String watchTime, String comment, Cinema cinema, PersonWithId person) {
         this.movieName = movieName;
@@ -18,8 +18,8 @@ public class Memoir {
         this.watchDate = watchDate;
         this.watchTime = watchTime;
         this.comment = comment;
-        this.cinema = cinema;
-        this.person = person;
+        this.cinemaId = cinema;
+        this.userId = person;
     }
 
     public String getMovieName() {
@@ -47,10 +47,10 @@ public class Memoir {
     }
 
     public Cinema getCinema() {
-        return cinema;
+        return cinemaId;
     }
 
     public PersonWithId getPerson() {
-        return person;
+        return userId;
     }
 }

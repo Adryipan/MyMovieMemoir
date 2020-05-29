@@ -6,7 +6,7 @@ public class MapCinema extends Cinema {
 
     private LatLng geoCode;
 
-    public MapCinema(String cinemaId, String cinemaName, String suburb, LatLng geoCode) {
+    public MapCinema(int cinemaId, String cinemaName, String suburb, LatLng geoCode) {
         super(cinemaId, cinemaName, suburb);
         this.geoCode = geoCode;
     }

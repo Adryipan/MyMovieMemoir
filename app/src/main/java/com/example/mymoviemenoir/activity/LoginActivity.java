@@ -67,14 +67,18 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String userId){
-            if(!userId.isEmpty()) {
-                Intent intent = new Intent(LoginActivity.this, NavHomeActivity.class);
-                intent.putExtra("USERID", userId);
-                startActivity(intent);
+            if(userId != null) {
+                if (!userId.isEmpty()) {
+                    Intent intent = new Intent(LoginActivity.this, NavHomeActivity.class);
+                    intent.putExtra("USERID", userId);
+                    startActivity(intent);
+                } else {
+                    CharSequence message = "Username and Password not matched.";
+                    Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }else{
-                CharSequence message = "Username and Password not matched.";
-                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.TOP, 0,0);
+                Toast toast = Toast.makeText(LoginActivity.this, "Fail to connect to server", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }

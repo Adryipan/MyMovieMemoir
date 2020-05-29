@@ -1,6 +1,8 @@
 package com.example.mymoviemenoir.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.activity.ViewMemoirActivity;
+import com.example.mymoviemenoir.fragment.MemoirFragment;
 import com.example.mymoviemenoir.model.MemoirResult;
 import com.squareup.picasso.Picasso;
 
@@ -51,9 +55,11 @@ public class MemoirRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
     private List<MemoirResult> memoirResults;
+    Context context;
 
-    public MemoirRecyclerViewAdapter(List<MemoirResult> memoirs){
+    public MemoirRecyclerViewAdapter(List<MemoirResult> memoirs, Context context){
         memoirResults = memoirs;
+        this.context = context;
     }
 
     @NonNull
@@ -111,7 +117,26 @@ public class MemoirRecyclerViewAdapter extends RecyclerView.Adapter
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Intent intent = new Intent(context, ViewMemoirActivity.class);
+                intent.putExtra("NAME", memoir.getMovieName());
+                intent.putExtra("RATING", memoir.getUserRating());
+                intent.putExtra("IMGLINK", memoir.getImageLink());
+                intent.putExtra("WATCH", dateFormat.format(memoir.getWatchDate()));
+                intent.putExtra("CINEMA", memoir.getCinema() + ", " + memoir.getSuburb());
+                intent.putExtra("COUNTRY", memoir.getCountry());
+                String release = dateFormat.format((memoir.getReleaseDate()));
+                if(release.equals("9999-01-01")) {
+                    release = "N/A";
+                }
+                intent.putExtra("RELEASE", release);
+                intent.putExtra("GENRE", memoir.getGenre());
+                intent.putExtra("DIRECTOR", memoir.getDirector());
+                intent.putExtra("CAST", memoir.getCast());
+                intent.putExtra("SUMMARY", memoir.getPlot());
+                intent.putExtra("COMMENT", memoir.getComment());
 
+                context.startActivity(intent);
             }
         });
     }
