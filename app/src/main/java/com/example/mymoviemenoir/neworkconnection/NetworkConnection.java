@@ -3,11 +3,13 @@ package com.example.mymoviemenoir.neworkconnection;
 
 import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.entity.Credentials;
+import com.example.mymoviemenoir.entity.MapCinema;
 import com.example.mymoviemenoir.entity.Memoir;
 import com.example.mymoviemenoir.entity.Person;
 import com.example.mymoviemenoir.entity.PersonWithId;
 import com.example.mymoviemenoir.model.MemoirResult;
 import com.example.mymoviemenoir.securitywidget.HashingFunction;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -15,8 +17,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -174,17 +182,35 @@ public class NetworkConnection {
     }
 
     //Get all cinemas from the database
-    public String getAllCinema(){
+    public ArrayList<MapCinema> getAllCinemaWithGeoCode(){
+        ArrayList<MapCinema> cinemaResult = new ArrayList<>();
+        //Get all cinema from server
         Request.Builder builder = new Request.Builder();
         builder.url(BASE_URL + RESOURCE_CINEMA);
         Request request = builder.build();
         try{
             Response response = client.newCall(request).execute();
             results = response.body().string();
-        } catch (IOException e) {
+            JSONArray jsonArray = new JSONArray(results);
+            int numberOfItems = jsonArray.length();
+            if(numberOfItems > 0){
+                for(int i = 0; i < numberOfItems; i++) {
+                    JSONObject thisCinema = jsonArray.getJSONObject(i);
+                    //Call SearchGoogleMap for geocode
+                    String googleMapResult = SearchGoogleMapAPI.search(thisCinema.getString("suburb"));
+                    LatLng geocode = SearchGoogleMapAPI.getLatLng(googleMapResult);
+
+                    //Add this object to the list
+                    cinemaResult.add(new MapCinema(thisCinema.getString("cinemaId"),
+                            thisCinema.getString("cinemaName"), thisCinema.getString("suburb"),
+                            geocode));
+                }
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return results;
+        return cinemaResult;
     }
 
     //Get all memoir and return list of MemoirResult
@@ -212,18 +238,38 @@ public class NetworkConnection {
                     String imgLink = SearchOMDbAPI.getPosterLink(omdbResult);
                     String releaseDate = SearchOMDbAPI.getReleaseDate(omdbResult);
                     String onlineRating = SearchOMDbAPI.getIMDBRating(omdbResult);
+                    String genre = SearchOMDbAPI.getGenre(omdbResult);
+
+                    String releaseMonth = "";
+                    try {
+                        Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(releaseDate.split(" ")[1]);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        releaseMonth = String.valueOf(calendar.get(Calendar.MONTH));
+                        if (calendar.get(Calendar.MONTH) < 10) {
+                            releaseMonth = "0" + String.valueOf(calendar.get(Calendar.MONTH));
+                        }
+
+                        releaseDate = releaseDate.split(" ")[2] + "-" + releaseMonth + "-" + releaseDate.split(" ")[0];
+
+                    } catch (Exception e) {
+                        releaseDate = "9999-01-01";
+                        e.printStackTrace();
+                    }
+
 
                     memoirResults.add(new MemoirResult(thisMovie.getString("movieName"),
-                            releaseDate, thisMovie.getString("watchDate").substring(0,10), thisMovie.getString("rating"),
-                            onlineRating, thisMovie.getString("comment"), imgLink,
-                            thisMovie.getJSONObject("cinemaId").getString("suburb")));
-
+                            new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate),
+                            new SimpleDateFormat("yyyy-MM-dd").parse(thisMovie.getString("watchDate").substring(0,10))
+                            , Float.parseFloat(thisMovie.getString("rating")),
+                            Float.parseFloat(onlineRating), thisMovie.getString("comment"), imgLink,
+                            thisMovie.getJSONObject("cinemaId").getString("suburb"), genre));
                 }
 
             }
 
 
-        } catch (IOException | JSONException e) {
+        } catch (IOException | JSONException | ParseException e) {
             e.printStackTrace();
         }
         return memoirResults;

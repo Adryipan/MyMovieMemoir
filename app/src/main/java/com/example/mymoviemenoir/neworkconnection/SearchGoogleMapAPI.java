@@ -19,7 +19,7 @@ public class SearchGoogleMapAPI {
     private static final String BASE_URL =
             "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
-    public static String getGeocode(String suburb){
+    public static String search(String suburb){
         String results = "";
         OkHttpClient client = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
@@ -40,11 +40,12 @@ public class SearchGoogleMapAPI {
             JSONObject jsonObject= new JSONObject(results);
             JSONObject geometry = jsonObject.getJSONArray("results")
                     .getJSONObject(0)
-                    .getJSONObject("genmetry");
+                    .getJSONObject("geometry");
             latLng = new LatLng(geometry.getJSONObject("location").getDouble("lat")
                             , geometry.getJSONObject("location").getDouble("lng"));
 
         } catch (JSONException e) {
+            latLng = new LatLng(999,999);
             e.printStackTrace();
         }
         return latLng;

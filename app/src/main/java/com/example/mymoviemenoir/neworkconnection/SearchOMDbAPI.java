@@ -78,11 +78,22 @@ public class SearchOMDbAPI {
             JSONObject jsonObject = new JSONObject(result);
             rating = jsonObject.getString("imdbRating");
         } catch (Exception e) {
-            rating = "N/A";
+            rating = "0";
             e.printStackTrace();
         }
         return rating;
     }
 
+    public static String getGenre(String result){
+        String genre = "";
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            genre = jsonObject.getString("Genre");
+        } catch (Exception e) {
+            genre = "N/A";
+            e.printStackTrace();
+        }
+        return genre;
+    }
 
 }

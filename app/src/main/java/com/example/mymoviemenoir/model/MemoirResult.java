@@ -1,19 +1,20 @@
 package com.example.mymoviemenoir.model;
 
+import java.util.Date;
+
 public class MemoirResult {
 
     private String movieName;
-    private String releaseDate;
-    private String watchDate;
-    private String userRating;
-    private String onlineRating;
+    private Date releaseDate;
+    private Date watchDate;
+    private float userRating;
+    private float onlineRating;
     private String comment;
     private String imageLink;
     private String suburb;
+    private String genre;
 
-    public MemoirResult(String movieName, String releaseDate, String watchDate,
-                        String userRating, String onlineRating, String comment,
-                        String imageLink, String suburb) {
+    public MemoirResult(String movieName, Date releaseDate, Date watchDate, float userRating, float onlineRating, String comment, String imageLink, String suburb, String genre) {
         this.movieName = movieName;
         this.releaseDate = releaseDate;
         this.watchDate = watchDate;
@@ -22,69 +23,42 @@ public class MemoirResult {
         this.comment = comment;
         this.imageLink = imageLink;
         this.suburb = suburb;
+        this.genre = genre;
     }
 
     public String getMovieName() {
         return movieName;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
-
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getWatchDate() {
+    public Date getWatchDate() {
         return watchDate;
     }
 
-    public void setWatchDate(String watchDate) {
-        this.watchDate = watchDate;
-    }
-
-    public String getUserRating() {
+    public float getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(String userRating) {
-        this.userRating = userRating;
-    }
-
-    public String getOnlineRating() {
+    public float getOnlineRating() {
         return onlineRating;
-    }
-
-    public void setOnlineRating(String onlineRating) {
-        this.onlineRating = onlineRating;
     }
 
     public String getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getImageLink() {
         return imageLink;
-    }
-
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
     }
 
     public String getSuburb() {
         return suburb;
     }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
+    public String getGenre() {
+        return genre;
     }
 }

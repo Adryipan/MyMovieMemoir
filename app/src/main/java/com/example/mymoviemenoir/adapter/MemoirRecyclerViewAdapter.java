@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MemoirRecyclerViewAdapter extends RecyclerView.Adapter
@@ -67,27 +69,29 @@ public class MemoirRecyclerViewAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final MemoirResult memoir = memoirResults.get(position);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         TextView movieName = viewHolder.movieNameTV;
         movieName.setText(memoir.getMovieName());
 
         TextView releaseDate = viewHolder.releaseDateTV;
-        releaseDate.setText("Released:\n" + memoir.getReleaseDate());
+        String release = dateFormat.format((memoir.getReleaseDate()));
+        if(release.equals("9999-01-01")) {
+            release = "N/A";
+        }
+        releaseDate.setText("Released:\n" + release);
 
         TextView watchDate = viewHolder.watchDate;
-        watchDate.setText("Watched:\n" + memoir.getWatchDate());
+        watchDate.setText("Watched:\n" + dateFormat.format(memoir.getWatchDate()));
 
         TextView suburb = viewHolder.suburbTV;
         suburb.setText("Cinema location: " + memoir.getSuburb());
 
         RatingBar userRating = viewHolder.userRatingBar;
-        userRating.setRating(Float.parseFloat(memoir.getUserRating()));
+        userRating.setRating(memoir.getUserRating());
 
         RatingBar onlineRating = viewHolder.onlineRatingBar;
-        if (!memoir.getOnlineRating().equals("N/A")) {
-            onlineRating.setRating(Float.parseFloat(memoir.getOnlineRating()));
-        }else{
-            onlineRating.setRating(0);
-        }
+        onlineRating.setRating(memoir.getOnlineRating());
 
         TextView comment = viewHolder.comment;
         comment.setText("Comment\n" + memoir.getComment() + "\n");
