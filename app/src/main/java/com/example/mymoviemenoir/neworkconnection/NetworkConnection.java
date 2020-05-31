@@ -250,7 +250,7 @@ public class NetworkConnection {
             results = response.body().string();
             JSONArray jsonArray = new JSONArray(results);
             int numberOfItems = jsonArray.length();
-            if(numberOfItems > 0){
+            if(numberOfItems > 0) {
                 for (int i = 0; i < numberOfItems; i++) {
                     JSONObject thisMovie = jsonArray.getJSONObject(i);
                     //Call SearchGoogle for the imdb id
@@ -289,41 +289,37 @@ public class NetworkConnection {
                     float convertedOnlineRating = 0f;
                     if (!onlineRating.equals("N/A")) {
                         convertedOnlineRating = Float.parseFloat(onlineRating);
-                        if(convertedOnlineRating >= 9.1f){
+                        if (convertedOnlineRating >= 9.1f) {
                             convertedOnlineRating = 5f;
-                        }else if(convertedOnlineRating >= 8.2f && convertedOnlineRating <= 9f){
+                        } else if (convertedOnlineRating >= 8.2f && convertedOnlineRating <= 9f) {
                             convertedOnlineRating = 4.5f;
-                        }else if(convertedOnlineRating >= 7.3f && convertedOnlineRating <= 9.1f){
+                        } else if (convertedOnlineRating >= 7.3f && convertedOnlineRating <= 9.1f) {
                             convertedOnlineRating = 4f;
-                        }else if(convertedOnlineRating >= 6.4f && convertedOnlineRating <= 7.2f){
+                        } else if (convertedOnlineRating >= 6.4f && convertedOnlineRating <= 7.2f) {
                             convertedOnlineRating = 3.5f;
-                        }else if(convertedOnlineRating >= 5.5f && convertedOnlineRating <= 6.3f){
+                        } else if (convertedOnlineRating >= 5.5f && convertedOnlineRating <= 6.3f) {
                             convertedOnlineRating = 3f;
-                        }else if(convertedOnlineRating >= 4.6f && convertedOnlineRating <= 5.4f){
+                        } else if (convertedOnlineRating >= 4.6f && convertedOnlineRating <= 5.4f) {
                             convertedOnlineRating = 2.5f;
-                        }else if(convertedOnlineRating >= 3.7f && convertedOnlineRating <= 4.5f){
+                        } else if (convertedOnlineRating >= 3.7f && convertedOnlineRating <= 4.5f) {
                             convertedOnlineRating = 2f;
-                        }else if(convertedOnlineRating >= 2.8f && convertedOnlineRating <= 3.6f){
+                        } else if (convertedOnlineRating >= 2.8f && convertedOnlineRating <= 3.6f) {
                             convertedOnlineRating = 1.5f;
-                        }else if(convertedOnlineRating >= 1.9f && convertedOnlineRating <= 2.7f){
+                        } else if (convertedOnlineRating >= 1.9f && convertedOnlineRating <= 2.7f) {
                             convertedOnlineRating = 1f;
-                        }else if(convertedOnlineRating >= 1f && convertedOnlineRating <= 1.8f){
+                        } else if (convertedOnlineRating >= 1f && convertedOnlineRating <= 1.8f) {
                             convertedOnlineRating = 0.5f;
                         }
                     }
-
-
                     memoirResults.add(new MemoirResult(thisMovie.getString("movieName"),
                             new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate),
-                            new SimpleDateFormat("yyyy-MM-dd").parse(thisMovie.getString("watchDate").substring(0,10))
+                            new SimpleDateFormat("yyyy-MM-dd").parse(thisMovie.getString("watchDate").substring(0, 10))
                             , Float.parseFloat(thisMovie.getString("rating")),
                             convertedOnlineRating, thisMovie.getString("comment"), imgLink, thisMovie.getJSONObject("cinemaId").getString("cinemaName"),
                             thisMovie.getJSONObject("cinemaId").getString("suburb"), genre, country, director, cast, plot));
                 }
 
             }
-
-
         } catch (IOException | JSONException | ParseException e) {
             e.printStackTrace();
         }

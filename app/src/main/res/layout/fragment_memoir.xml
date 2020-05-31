@@ -28,6 +28,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/sort_by"
         android:textSize="18sp"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -39,6 +40,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/date"
         android:textSize="18sp"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -51,6 +53,7 @@
         android:layout_marginEnd="65dp"
         android:text="@string/your_rating"
         android:textSize="18sp"
+        android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/sortByOnlineRatingTV"
         app:layout_constraintStart_toEndOf="@+id/sortByWatchDateTV"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -63,6 +66,7 @@
         android:layout_marginEnd="40dp"
         android:text="@string/public_rating"
         android:textSize="18sp"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 

@@ -3,10 +3,12 @@ package com.example.mymoviemenoir.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class AddCinemaActivity extends AppCompatActivity {
                 String suburb = cinemaSuburbET.getText().toString();
 
                 if(!name.trim().isEmpty() && !suburb.trim().isEmpty()) {
+                    hideKeyboard(v);
                     AddCinemaTask addCinemaTask = new AddCinemaTask();
                     addCinemaTask.execute(name, suburb);
                 }else if(name.trim().isEmpty()){
@@ -52,6 +55,7 @@ public class AddCinemaActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(v);
                 Intent intent = new Intent(AddCinemaActivity.this, AddToMemoirActivity.class);
                 setResult(RESULT_CANCELED);
                 finish();
@@ -76,5 +80,10 @@ public class AddCinemaActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             finish();
         }
+    }
+
+    private void hideKeyboard(View v){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 }

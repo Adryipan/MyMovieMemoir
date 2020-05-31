@@ -1,10 +1,12 @@
 package com.example.mymoviemenoir.fragment;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -45,27 +47,36 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final String keyword = searchET.getText().toString();
-                //Anonymous AsyncTask
-                new AsyncTask<String, Void, String>(){
-                    @Override
-                    protected String doInBackground(String... strings) {
-                        return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"3"});
-                    }
+                if (!keyword.trim().isEmpty()) {
+                    hideKeyboard();
+                    //Anonymous AsyncTask
+                    new AsyncTask<String, Void, String>() {
+                        @Override
+                        protected String doInBackground(String... strings) {
+                            return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"3"});
+                        }
 
-                    @Override
-                    protected void onPostExecute(String result) {
-                        ArrayList<SearchMovieResult> searchMovieResults = SearchGoogleAPI.getNameYearImage(result);
-                        adapter = new SearchMovieRecyclerViewAdapter(searchMovieResults, view.getContext());
-                        searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
-                        searchRecyclerView.addItemDecoration(new DividerItemDecoration(searchRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
-                        searchRecyclerView.setAdapter(adapter);
-                        layoutManager = new LinearLayoutManager(searchRecyclerView.getContext());
-                        searchRecyclerView.setLayoutManager(layoutManager);
-                    }
-                }.execute();
+                        @Override
+                        protected void onPostExecute(String result) {
+                            ArrayList<SearchMovieResult> searchMovieResults = SearchGoogleAPI.getNameYearImage(result);
+                            adapter = new SearchMovieRecyclerViewAdapter(searchMovieResults, view.getContext());
+                            searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
+                            searchRecyclerView.addItemDecoration(new DividerItemDecoration(searchRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
+                            searchRecyclerView.setAdapter(adapter);
+                            layoutManager = new LinearLayoutManager(searchRecyclerView.getContext());
+                            searchRecyclerView.setLayoutManager(layoutManager);
+                        }
+                    }.execute();
+                }else{
+                    searchET.setError("Keyword must not be empty");
+                }
             }
         });
-
         return view;
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

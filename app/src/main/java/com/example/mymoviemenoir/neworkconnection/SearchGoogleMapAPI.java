@@ -19,11 +19,12 @@ public class SearchGoogleMapAPI {
     private static final String BASE_URL =
             "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
-    public static String search(String suburb){
+    public static String search(String location){
         String results = "";
         OkHttpClient client = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
-        builder.url(BASE_URL + suburb + BASE_URL_subfix);
+        location = location.replace(" ", "+");
+        builder.url(BASE_URL + location + BASE_URL_subfix);
         Request request = builder.build();
         try{
             Response response = client.newCall(request).execute();

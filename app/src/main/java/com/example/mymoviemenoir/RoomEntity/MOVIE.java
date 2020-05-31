@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "movie_table")
 public class MOVIE {
     @PrimaryKey(autoGenerate = true)
     public int mid;

@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         Date date = Calendar.getInstance().getTime();
 
         //Show the date on the screen
-        SimpleDateFormat formatToday = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat formatToday = new SimpleDateFormat("dd MMM yyyy");
         String today = formatToday.format(date);
         TextView dateTV = view.findViewById(R.id.dateTV);
         dateTV.setText(today);

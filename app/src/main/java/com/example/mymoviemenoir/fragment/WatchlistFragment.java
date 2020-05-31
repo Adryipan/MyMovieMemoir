@@ -1,5 +1,7 @@
 package com.example.mymoviemenoir.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,25 +51,27 @@ public class WatchlistFragment extends Fragment {
         recyclerView = view.findViewById(R.id.watchlistRecyclerView);
         movies = new ArrayList<WatchlistResult>();
 
+        //setup the recycler view
+        adapter = new WatchlistRecyclerViewAdapter(movies);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapter);
+
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
         //Query Room to get all movies
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         watchlistViewModel.initialize(getActivity().getApplication());
         watchlistViewModel.getAllMovies().observe(getViewLifecycleOwner(), new Observer<List<MOVIE>>() {
             @Override
             public void onChanged(List<MOVIE> moviesResult) {
+                movies = new ArrayList<>();
                 for(MOVIE thisMOVIE : moviesResult){
                     //Add all the movies from room to the rv model
                     WatchlistResult thisMovieResult = new WatchlistResult(thisMOVIE);
                     movies.add(thisMovieResult);
                 }
-
-                //setup the recycler view
-                adapter = new WatchlistRecyclerViewAdapter(movies);
-                recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-                recyclerView.setAdapter(adapter);
-
-                layoutManager = new LinearLayoutManager(getContext());
-                recyclerView.setLayoutManager(layoutManager);
+                adapter.setWatchlistResults(movies);
             }
         });
 
@@ -77,9 +81,29 @@ public class WatchlistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 WatchlistResult selectedMovie = adapter.getSelectedItem();
-                watchlistViewModel.delete(selectedMovie.getMovie());
-                adapter.deleteDate();
-                Toast.makeText(WatchlistFragment.this.getContext(), selectedMovie.getMovie().getMovieName() + " deleted.", Toast.LENGTH_SHORT).show();
+                if(selectedMovie != null) {
+                    DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch(which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    watchlistViewModel.delete(selectedMovie.getMovie());
+                                    Toast.makeText(WatchlistFragment.this.getContext(), selectedMovie.getMovie().getMovieName() + " deleted.", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WatchlistFragment.this.getContext());
+                    builder.setMessage("Delete movie " + selectedMovie.getMovie().getMovieName() + " from watchlist?\n")
+                            .setPositiveButton("Yes", dialogListener).setNegativeButton("No", dialogListener).show();
+
+                }else if(adapter.getItemCount() > 0){
+                    Toast.makeText(WatchlistFragment.this.getContext() , "Please select a movie to delete", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(WatchlistFragment.this.getContext(), "Watchlist is already empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -89,10 +113,16 @@ public class WatchlistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 WatchlistResult selectedMovie = adapter.getSelectedItem();
-                Intent intent = new Intent(WatchlistFragment.this.getContext(), ViewMovieActivity.class);
-                intent.putExtra("IMDB ID", selectedMovie.getMovie().getImdbID());
-                intent.putExtra("DISABLE", true);
-                startActivity(intent);
+                if(selectedMovie != null) {
+                    Intent intent = new Intent(WatchlistFragment.this.getContext(), ViewMovieActivity.class);
+                    intent.putExtra("IMDB ID", selectedMovie.getMovie().getImdbID());
+                    intent.putExtra("DISABLE", true);
+                    startActivity(intent);
+                }else if(adapter.getItemCount() > 0){
+                    Toast.makeText(WatchlistFragment.this.getContext() , "Please select a movie to delete", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(WatchlistFragment.this.getContext(), "Watchlist is empty, what do you want to see?", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

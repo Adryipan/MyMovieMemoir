@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +22,7 @@ import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.entity.MapCinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
+import com.example.mymoviemenoir.neworkconnection.SearchGoogleMapAPI;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -30,6 +32,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
@@ -60,8 +66,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         networkConnection = new NetworkConnection();
 
 
-
-
         //The location manager
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -72,7 +76,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
 
         mapView.onCreate(savedInstanceState);
-        mapView.onResume();
+
         mapView.getMapAsync(this);
         return view;
     }
@@ -82,13 +86,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         this.googleMap = googleMap;
         GetAllCinemaTask getAllCinemaTask = new GetAllCinemaTask();
         getAllCinemaTask.execute();
-        //Pin my location
-        if(currentLocation != null) {
-            this.googleMap.addMarker(new MarkerOptions().position(currentLocation).title("My location"));
-            float zoomLevel = 12f;
-            this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel));
-        }
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERID", Context.MODE_PRIVATE);
+        GetUserInfoTask getUserInfoTask = new GetUserInfoTask();
+        getUserInfoTask.execute(sharedPreferences.getString("USERID", "0"));
 
     }
 
@@ -135,6 +136,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
     }
 
+    private class GetUserInfoTask extends AsyncTask<String, Void, LatLng>{
+
+        @Override
+        protected LatLng doInBackground(String... strings) {
+            LatLng userLocation = null;
+            String userInfo = networkConnection.getUserByID(strings[0]);
+            try {
+                JSONObject user = new JSONObject(userInfo);
+                String address = user.getString("streetAddress") + " " + user.getString("stateCode") + " " + user.getString("postcode");
+                address = SearchGoogleMapAPI.search(address);
+                userLocation = SearchGoogleMapAPI.getLatLng(address);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return userLocation;
+        }
+
+        @Override
+        protected void onPostExecute(LatLng userLocation) {
+            if(userLocation.longitude != 999 && userLocation.latitude!= 999){
+                googleMap.addMarker(new MarkerOptions().position(userLocation).title("Home"));
+                float zoomLevel = 11f;
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, zoomLevel));
+            }else{
+                //Pin my current location
+                if(currentLocation != null) {
+                    googleMap.addMarker(new MarkerOptions().position(currentLocation).title("My location"));
+                    float zoomLevel = 11f;
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel));
+                }
+            }
+        }
+    }
+
 
     private class GetAllCinemaTask extends AsyncTask<Void, Void, ArrayList<MapCinema>>{
 
@@ -145,13 +180,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         @Override
         protected void onPostExecute(ArrayList<MapCinema> mapCinemas) {
+            mapView.onResume();
             cinemas = mapCinemas;
             for(MapCinema thisCinema : cinemas) {
                 //Pin the cinemas
                 if (thisCinema.getGeoCode().latitude != 999 & thisCinema.getGeoCode().longitude != 999) {
                     googleMap.addMarker(new MarkerOptions().position(thisCinema.getGeoCode()).title(thisCinema.getCinemaName())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                            //.setPosition(thisCinema.getGeoCode());
                 }
             }
         }

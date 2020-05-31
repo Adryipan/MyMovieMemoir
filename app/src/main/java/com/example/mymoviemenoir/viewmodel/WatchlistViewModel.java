@@ -29,6 +29,10 @@ public class WatchlistViewModel extends ViewModel {
         return watchlistRepository.getAllMovie();
     }
 
+    public List<MOVIE> getAllNoLive(){
+        return watchlistRepository.getAllNoLive();
+    }
+
     public void insert(MOVIE movie){
         watchlistRepository.insert(movie);
     }
@@ -41,13 +45,20 @@ public class WatchlistViewModel extends ViewModel {
         watchlistRepository.updateWatchlistByID(mid, movieName, releaseDate, timeAdded);
     }
 
-    public LiveData<MOVIE> findByID(int mid){
+    public MOVIE findByID(int mid){
         return watchlistRepository.findByID(mid);
     }
 
-    public LiveData<MOVIE> findByDetails(String movieName, String releaseDate, String timeAdded){
-        return watchlistRepository.findByDetails(movieName, releaseDate, timeAdded);
+    public MOVIE findByDetails(String movieName, String releaseDate ){
+        return watchlistRepository.findByDetails(movieName, releaseDate);
     }
 
+    public MOVIE findByName(String name){
+        return watchlistRepository.findByName(name);
+    }
+
+    public MOVIE findByIMDbID(String imdbID){
+        return watchlistRepository.findByIMDbID(imdbID);
+    }
 
 }

@@ -1,6 +1,8 @@
 package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -19,16 +21,20 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.RoomEntity.MOVIE;
 import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
+import com.example.mymoviemenoir.viewmodel.WatchlistViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddToMemoirActivity extends AppCompatActivity {
@@ -37,6 +43,7 @@ public class AddToMemoirActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
     
     private NetworkConnection networkConnection;
+    private WatchlistViewModel watchlistViewModel;
 
     private EditText commentET;
     private TextView watchDateTV;
@@ -56,16 +63,27 @@ public class AddToMemoirActivity extends AppCompatActivity {
     private String cinemaSuburb;
     private String comment;
     private String rating;
+    private String imdbID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_memoir);
+
+        watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
+        watchlistViewModel.initialize(getApplication());
+        watchlistViewModel.getAllMovies().observe(this, new Observer<List<MOVIE>>() {
+            @Override
+            public void onChanged(List<MOVIE> moviesResult) {
+            }
+        });
+
         Intent intent = this.getIntent();
         movieName = intent.getStringExtra("MOVIE");
         //Format releaseDate to match the POST format
         releaseDate = intent.getStringExtra("RELEASE");
+        imdbID = intent.getStringExtra("IMDBID");
         String[] releaseDateComponent = releaseDate.split(" ");
         String month = "";
         try {
@@ -166,16 +184,11 @@ public class AddToMemoirActivity extends AppCompatActivity {
         };
 
 
-
         //When Submit button is clicked
         submitBtn = findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Get postcode and comment
-//                suburbET = findViewById(R.id.suburbET);
-//                cinemaSuburb = suburbET.getText().toString();
-
                 commentET = findViewById(R.id.commentET);
                 comment = commentET.getText().toString();
 
@@ -185,15 +198,18 @@ public class AddToMemoirActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("USERID", Context.MODE_PRIVATE);
                 String userId = sharedPreferences.getString("USERID", null);
                 cinemaSuburb = cinema.getSuburb();
-                String[] details = {movieName, releaseDate, rating, watchDate, watchTime, comment, cinemaSuburb, userId};
-                AddMemoirTask addMemoirTask = new AddMemoirTask();
-                addMemoirTask.execute(details);
-
+                if(!cinemaSuburb.equals("pick a place or add one")) {
+                    String[] details = {movieName, releaseDate, rating, watchDate, watchTime, comment, cinemaSuburb, userId, imdbID};
+                    AddMemoirTask addMemoirTask = new AddMemoirTask();
+                    addMemoirTask.execute(details);
+                }else{
+                    Toast.makeText(AddToMemoirActivity.this, "Please pick a cinema", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         
         //When Cancel button is clicked
-        cancelBtn = findViewById(R.id.addCinemaCancelBtn);
+        cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,11 +217,6 @@ public class AddToMemoirActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -222,6 +233,14 @@ public class AddToMemoirActivity extends AppCompatActivity {
     private class AddMemoirTask extends AsyncTask<String, Void, String>{
         @Override
         protected String doInBackground(String... strings) {
+            List<MOVIE> result = watchlistViewModel.getAllNoLive();
+            MOVIE movie = null;
+            for(MOVIE thisMovie : result){
+                if(thisMovie.getImdbID().equals(strings[8])){
+                    movie = thisMovie;
+                }
+            }
+            watchlistViewModel.delete(movie);
             return networkConnection.addMemoir(strings);
         }
 

@@ -13,17 +13,26 @@ import java.util.List;
 @Dao
 public interface WatchlistDAO {
 
-    @Query("SELECT * FROM MOVIE")
+    @Query("SELECT * FROM movie_table")
     LiveData<List<MOVIE>> getAll();
 
-    @Query("UPDATE MOVIE SET movie_name=:movieName, release_date=:releaseDate, time_added=:timeAdded WHERE mid=:mid")
+    @Query("SELECT * FROM movie_table")
+    List<MOVIE> getAllNoLive();
+
+    @Query("UPDATE movie_table SET movie_name=:movieName, release_date=:releaseDate, time_added=:timeAdded WHERE mid=:mid")
     void updateWatchlistByID(int mid, String movieName, String releaseDate, String timeAdded);
 
-    @Query("SELECT * FROM MOVIE WHERE mid = :mid LIMIT 1")
-    LiveData<MOVIE> findByID(int mid);
+    @Query("SELECT * FROM movie_table WHERE mid = :mid LIMIT 1")
+    MOVIE findByID(int mid);
 
-    @Query("SELECT * FROM MOVIE WHERE movie_name=:movieName AND release_date=:releaseDate AND time_added=:timeAdded LIMIT 1")
-    LiveData<MOVIE> findByDetails(String movieName, String releaseDate, String timeAdded);
+    @Query("SELECT * FROM movie_table WHERE imdb_id = :imdbID LIMIT 1")
+    MOVIE findByIMDbID(String imdbID);
+
+    @Query("SELECT * FROM movie_table WHERE movie_name=:movieName AND release_date=:releaseDate LIMIT 1")
+    MOVIE findByDetails(String movieName, String releaseDate);
+
+    @Query("SELECT * FROM movie_table WHERE movie_name = :movieName")
+    MOVIE findByName(String movieName);
 
     @Insert
     long insert(MOVIE movie);

@@ -33,28 +33,31 @@ public class SearchOMDbAPI {
         try{
             JSONObject jsonObject = new JSONObject(result);
             String movieName = jsonObject.getString("Title");
-            Double rating = jsonObject.getDouble("imdbRating");
-            float convertedOnlineRating = rating.floatValue();
-            if(convertedOnlineRating >= 9.1f){
-                convertedOnlineRating = 5f;
-            }else if(convertedOnlineRating >= 8.2f && convertedOnlineRating <= 9f){
-                convertedOnlineRating = 4.5f;
-            }else if(convertedOnlineRating >= 7.3f && convertedOnlineRating <= 9.1f){
-                convertedOnlineRating = 4f;
-            }else if(convertedOnlineRating >= 6.4f && convertedOnlineRating <= 7.2f){
-                convertedOnlineRating = 3.5f;
-            }else if(convertedOnlineRating >= 5.5f && convertedOnlineRating <= 6.3f){
-                convertedOnlineRating = 3f;
-            }else if(convertedOnlineRating >= 4.6f && convertedOnlineRating <= 5.4f){
-                convertedOnlineRating = 2.5f;
-            }else if(convertedOnlineRating >= 3.7f && convertedOnlineRating <= 4.5f){
-                convertedOnlineRating = 2f;
-            }else if(convertedOnlineRating >= 2.8f && convertedOnlineRating <= 3.6f){
-                convertedOnlineRating = 1.5f;
-            }else if(convertedOnlineRating >= 1.9f && convertedOnlineRating <= 2.7f){
-                convertedOnlineRating = 1f;
-            }else if(convertedOnlineRating >= 1f && convertedOnlineRating <= 1.8f){
-                convertedOnlineRating = 0.5f;
+            float convertedOnlineRating = 0;
+            if(!jsonObject.getString("imdbRating").equals("N/A")) {
+                Double rating = jsonObject.getDouble("imdbRating");
+                rating.floatValue();
+                if (rating >= 9.1f) {
+                    convertedOnlineRating = 5f;
+                } else if (rating >= 8.2f && rating <= 9f) {
+                    convertedOnlineRating = 4.5f;
+                } else if (rating >= 7.3f && rating <= 9.1f) {
+                    convertedOnlineRating = 4f;
+                } else if (rating >= 6.4f && rating <= 7.2f) {
+                    convertedOnlineRating = 3.5f;
+                } else if (rating >= 5.5f && rating <= 6.3f) {
+                    convertedOnlineRating = 3f;
+                } else if (rating >= 4.6f && rating <= 5.4f) {
+                    convertedOnlineRating = 2.5f;
+                } else if (rating >= 3.7f && rating <= 4.5f) {
+                    convertedOnlineRating = 2f;
+                } else if (rating >= 2.8f && rating <= 3.6f) {
+                    convertedOnlineRating = 1.5f;
+                } else if (rating >= 1.9f && rating <= 2.7f) {
+                    convertedOnlineRating = 1f;
+                } else if (rating >= 1f && rating <= 1.8f) {
+                    convertedOnlineRating = 0.5f;
+                }
             }
 
             String cast = jsonObject.getString("Actors");
@@ -64,7 +67,8 @@ public class SearchOMDbAPI {
             String genre = jsonObject.getString("Genre");
             String director = jsonObject.getString("Director");
             String imdbID = jsonObject.getString("imdbID");
-            Movie thisMovie = new Movie(movieName, String.valueOf(convertedOnlineRating), genre, cast, releaseDate, country, director, plot, imdbID);
+            String imageLink = jsonObject.getString("Poster");
+            Movie thisMovie = new Movie(movieName, String.valueOf(convertedOnlineRating), genre, cast, releaseDate, country, director, plot, imdbID, imageLink);
             return thisMovie;
         } catch (Exception e) {
             e.printStackTrace();

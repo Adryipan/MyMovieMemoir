@@ -48,27 +48,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movieNameTV" />
 
-        <VideoView
-            android:id="@+id/tralierVV"
-            android:layout_width="331dp"
-            android:layout_height="196dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="65dp"
-            android:layout_marginEnd="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieNameTV" />
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/movieInfoScrollView"
             android:layout_width="326dp"
             android:layout_height="170dp"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="31dp"
             android:layout_marginEnd="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tralierVV">
+            app:layout_constraintTop_toBottomOf="@+id/viewMoviePoster">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,41 +75,41 @@
         </androidx.core.widget.NestedScrollView>
 
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/twittRecyclerView"
-            android:layout_width="318dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieInfoScrollView" />
-
         <Button
             android:id="@+id/watchlistBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="20dp"
             android:text="@string/movie_view_watchlist"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/twittRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/movieInfoScrollView" />
 
         <Button
             android:id="@+id/memoirBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
             android:text="@string/movie_view_memoir"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/twittRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/movieInfoScrollView" />
+
+        <ImageView
+            android:id="@+id/viewMoviePoster"
+            android:layout_width="161dp"
+            android:layout_height="158dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="125dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onlineRatingBar"
+            app:srcCompat="@mipmap/ic_launcher" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -55,7 +55,7 @@ public class TopFiveRecyclerViewAdapter extends RecyclerView.Adapter
         TextView tvName = viewHolder.movieNameTV;
         tvName.setText(movie.getName());
         TextView tvReleaseDate = viewHolder.releaseDateTV;
-        tvReleaseDate.setText(movie.getReleaseDate());
+        tvReleaseDate.setText("Released: " + movie.getReleaseDate());
         RatingBar ratingBar = viewHolder.ratingBar;
         ratingBar.setRating(Float.parseFloat(movie.getRating()));
     }

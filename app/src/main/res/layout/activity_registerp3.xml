@@ -80,8 +80,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="272dp"
-        android:text="TextView"
+        android:layout_marginEnd="298dp"
+        android:text="@string/state"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/suburbET" />

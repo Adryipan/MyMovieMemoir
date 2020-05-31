@@ -2,11 +2,13 @@ package com.example.mymoviemenoir.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,19 +31,28 @@ public class LoginActivity extends AppCompatActivity {
         signinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(v);
                 EditText usernameET = findViewById(R.id.usernameET);
                 EditText passwordET = findViewById(R.id.passwordET);
 
                 String username = usernameET.getText().toString();
-                String password = passwordET.getText().toString();
+                if(!username.trim().isEmpty()) {
+                    String password = passwordET.getText().toString();
+                    if(!password.trim().isEmpty()) {
 
-                //for debug
+//                //for debug
                 username = "john.smith@monash.edu.au";
                 password = "john";
 
-                if(!username.isEmpty() && !password.isEmpty()){
-                    GetByAuthenticationTask getByAuthenticationTask = new GetByAuthenticationTask();
-                    getByAuthenticationTask.execute(username, password);
+                        if (!username.isEmpty() && !password.isEmpty()) {
+                            GetByAuthenticationTask getByAuthenticationTask = new GetByAuthenticationTask();
+                            getByAuthenticationTask.execute(username, password);
+                        }
+                    }else{
+                        passwordET.setError("Password must not be empty");
+                    }
+                }else{
+                    usernameET.setError("Email must not be empty");
                 }
             }
         });
@@ -82,5 +93,10 @@ public class LoginActivity extends AppCompatActivity {
                 toast.show();
             }
         }
+    }
+
+    private void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

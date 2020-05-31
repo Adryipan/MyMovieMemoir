@@ -151,10 +151,6 @@ public class MemoirFragment extends Fragment {
             }
         });
 
-
-
-
-
         return view;
     }
 
@@ -187,7 +183,7 @@ public class MemoirFragment extends Fragment {
             genreSpinner.setAdapter(arrayAdapter);
 
             //For recycler view
-            adapter = new MemoirRecyclerViewAdapter(memoirs, MemoirFragment.this.getContext());
+            adapter = new MemoirRecyclerViewAdapter(filteredResult, MemoirFragment.this.getContext());
             recyclerView.addItemDecoration(new DividerItemDecoration(MemoirFragment.this.getContext(),
                     LinearLayoutManager.VERTICAL));
             recyclerView.setAdapter(adapter);

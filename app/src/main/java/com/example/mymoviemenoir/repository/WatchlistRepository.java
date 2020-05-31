@@ -14,7 +14,7 @@ public class WatchlistRepository {
 
     private WatchlistDAO dao;
     private LiveData<List<MOVIE>> allMovie;
-    private LiveData<MOVIE> movie;
+    private MOVIE queryMovie;
 
     public WatchlistRepository(Application application){
         WatchlistDB db = WatchlistDB.getInstance(application);
@@ -24,6 +24,10 @@ public class WatchlistRepository {
     public LiveData<List<MOVIE>> getAllMovie(){
         allMovie = dao.getAll();
         return allMovie;
+    }
+
+    public List<MOVIE> getAllNoLive(){
+        return dao.getAllNoLive();
     }
 
     public void insert (final MOVIE movie){
@@ -57,29 +61,52 @@ public class WatchlistRepository {
         });
     }
 
-    public LiveData<MOVIE> findByID(final int mid){
+    public MOVIE findByID(final int mid){
         WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<MOVIE> runMOVIE = dao.findByID(mid);
-                setMovie(runMOVIE);
+                MOVIE runMOVIE = dao.findByID(mid);
+                setResultMovie(runMOVIE);
             }
         });
-        return movie;
+        return queryMovie;
     }
 
-    public LiveData<MOVIE> findByDetails(final String movieName, final String releaseDate, final String timeAdded){
+    public MOVIE findByDetails(final String movieName, final String releaseDate){
         WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<MOVIE> runMOVIE = dao.findByDetails(movieName, releaseDate, timeAdded);
-                setMovie(runMOVIE);
+                MOVIE runMOVIE = dao.findByDetails(movieName, releaseDate);
+                setResultMovie(runMOVIE);
             }
         });
-        return movie;
+        return queryMovie;
     }
 
-    public void setMovie(LiveData<MOVIE> movie) {
-        this.movie = movie;
+    public MOVIE findByName(final String movieName){
+        WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                MOVIE runMOVIE = dao.findByName(movieName);
+                setResultMovie(runMOVIE);
+            }
+        });
+        return queryMovie;
+    }
+
+    public MOVIE findByIMDbID(final String imdbID){
+        WatchlistDB.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                MOVIE runMOVIE = dao.findByIMDbID(imdbID);
+                setResultMovie(runMOVIE);
+            }
+        });
+        return queryMovie;
+    }
+
+
+    public void setResultMovie(MOVIE thisMovie){
+        this.queryMovie = thisMovie;
     }
 }

@@ -33,7 +33,6 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
             movieNameView = itemView.findViewById(R.id.movie_name);
             releaseYearView = itemView.findViewById(R.id.release_date);
             posterView = itemView.findViewById(R.id.movie_poster);
-            viewMovie = itemView.findViewById(R.id.viewMovie);
 
         }
     }
@@ -67,27 +66,26 @@ public class SearchMovieRecyclerViewAdapter extends RecyclerView.Adapter
         tvMovieName.setText(movie.getMovieName());
         //For the release year
         TextView tvReleaseYear = viewHolder.releaseYearView;
-        tvReleaseYear.setText(movie.getReleaseYear());
+        tvReleaseYear.setText("Released on\n" + movie.getReleaseYear());
         //One more for the imageview
         ImageView imPoster = viewHolder.posterView;
         Picasso.get()
                 .load(movie.getImageLink())
                 .placeholder(R.mipmap.ic_launcher)
-                .resize(300,450)
+                .resize(450,500)
                 .centerInside()
                 .into(imPoster);
         //Set view movie button
-        TextView tvViewMovie = viewHolder.viewMovie;
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ViewMovieActivity.class);
                 intent.putExtra("MOVIE NAME", movie.getMovieName());
                 intent.putExtra("IMDB ID", movie.getImdbID());
+                intent.putExtra("IMG", movie.getImageLink());
                 context.startActivity(intent);
             }
         });
-
     }
 
 

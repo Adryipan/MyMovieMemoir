@@ -145,7 +145,6 @@ public class ReportFragment extends Fragment {
             }
         });
 
-
         //Get the spinner ready
         //Populate the spinner with 5 years
         //Get current year
@@ -159,6 +158,7 @@ public class ReportFragment extends Fragment {
         barchartYearSpinner.setAdapter(spinnerAdapter);
 
         barChart = view.findViewById(R.id.barChart);
+        pieChart.setNoDataText("Please pick a date to continue");
         barchartYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -176,12 +176,6 @@ public class ReportFragment extends Fragment {
 
             }
         });
-
-
-
-
-
-
         return view;
     }
 
@@ -198,7 +192,7 @@ public class ReportFragment extends Fragment {
                 pieEntries = new ArrayList<PieEntry>();
                 JSONArray jsonArray = new JSONArray(result);
                 int numberOfItems = jsonArray.length();
-                if(numberOfItems > 0) {
+                if (numberOfItems > 0) {
                     //Count total
                     int total = 0;
                     for (int i = 0; i < numberOfItems; i++) {
@@ -209,7 +203,7 @@ public class ReportFragment extends Fragment {
                     for (int i = 0; i < numberOfItems; i++) {
                         JSONObject thisLocation = jsonArray.getJSONObject(i);
                         int thisCount = thisLocation.getInt("Count");
-                        float thisPercentage = ((float)thisCount / (float)total) * 100;
+                        float thisPercentage = ((float) thisCount / (float) total) * 100;
                         String thisSuburb = thisLocation.getString("Suburb");
                         PieEntry thisPieEntry = new PieEntry(thisPercentage, thisSuburb);
                         pieEntries.add(thisPieEntry);

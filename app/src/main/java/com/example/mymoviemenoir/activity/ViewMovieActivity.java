@@ -5,12 +5,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mymoviemenoir.R;
@@ -18,11 +20,13 @@ import com.example.mymoviemenoir.RoomEntity.MOVIE;
 import com.example.mymoviemenoir.entity.Movie;
 import com.example.mymoviemenoir.neworkconnection.SearchOMDbAPI;
 import com.example.mymoviemenoir.viewmodel.WatchlistViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ViewMovieActivity extends AppCompatActivity {
 
@@ -30,15 +34,20 @@ public class ViewMovieActivity extends AppCompatActivity {
     private Button menoirBtn;
     private Movie thisMovie;
     private WatchlistViewModel watchlistViewModel;
-
-
+    private ImageView poster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_movie);
+        poster = findViewById(R.id.viewMoviePoster);
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         watchlistViewModel.initialize(getApplication());
+        watchlistViewModel.getAllMovies().observe(this, new Observer<List<MOVIE>>() {
+            @Override
+            public void onChanged(List<MOVIE> moviesResult) {
+            }
+        });
 
         Intent intent = this.getIntent();
         final String imdbID = intent.getStringExtra("IMDB ID");
@@ -64,8 +73,15 @@ public class ViewMovieActivity extends AppCompatActivity {
                         "Released On: " + thisMovie.getReleaseDate() + "\n" +
                         "Directed by: " + thisMovie.getDirectors() + "\n" +
                         "Cast: " + thisMovie.getCast() + "\n\n" +
-                        "Summary: " + "\n" +
+                        "Summary: " + "\n\n" +
                         thisMovie.getPlot());
+                Picasso.get()
+                        .load(thisMovie.getImageLink())
+                        .placeholder(R.mipmap.ic_launcher)
+                        .resize(450,500)
+                        .centerInside()
+                        .into(poster);
+
 
             }
         }.execute();
@@ -83,12 +99,12 @@ public class ViewMovieActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     //Get timestamp
                     Date currentTime = Calendar.getInstance().getTime();
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                     String timeAdded = dateFormat.format(currentTime);
                     //Call Room
                     MOVIE roomMOVIE = new MOVIE(thisMovie.getMovieName(), thisMovie.getReleaseDate(), timeAdded, thisMovie.getImdbID());
-                    watchlistViewModel.insert(roomMOVIE);
-                    Toast.makeText(ViewMovieActivity.this, thisMovie.getMovieName() + " added to Watchlist.", Toast.LENGTH_SHORT).show();
+                    AddToWatchListTask add = new AddToWatchListTask();
+                    add.execute(roomMOVIE);
                 }
             });
         }
@@ -101,6 +117,7 @@ public class ViewMovieActivity extends AppCompatActivity {
                     Intent intent = new Intent(ViewMovieActivity.this, AddToMemoirActivity.class);
                     intent.putExtra("MOVIE", thisMovie.getMovieName());
                     intent.putExtra("RELEASE", thisMovie.getReleaseDate());
+                    intent.putExtra("IMDBID", thisMovie.getImdbID());
                     startActivityForResult(intent, 1);
                 }
             });
@@ -113,6 +130,40 @@ public class ViewMovieActivity extends AppCompatActivity {
             Toast.makeText(this, "Memoir Added", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Cannot add to memoir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class AddToWatchListTask extends AsyncTask<MOVIE, Void, String>{
+
+        @Override
+        protected String doInBackground(MOVIE... movies) {
+            List<MOVIE> result = watchlistViewModel.getAllNoLive();
+            boolean found = false;
+            //Check if there is existing movie
+            for(MOVIE thisMovie : result){
+                if(thisMovie.getImdbID().equals(movies[0].getImdbID())){
+                    found = true;
+                    break;
+                }
+            }
+            //If not found
+            if(!found){
+                watchlistViewModel.insert(movies[0]);
+                return movies[0].getMovieName();
+            }else{
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+           //Result is null means not added
+            if(result == null){
+                Toast.makeText(ViewMovieActivity.this, "Movie already in watchlist", Toast.LENGTH_SHORT).show();
+                watchListBtn.setEnabled(false);
+            }else{
+                Toast.makeText(ViewMovieActivity.this, result + " added to watchlist", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

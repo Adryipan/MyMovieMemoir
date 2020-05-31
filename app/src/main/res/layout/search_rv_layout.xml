@@ -2,35 +2,37 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/movie_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textColor="#000000"/>
 
-    <TextView
-        android:id="@+id/release_date"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:textAlignment="center"
-        android:textColor="#000000"/>
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/movie_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textColor="#000000"/>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/movie_poster"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_weight="1"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:id="@+id/viewMovie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1"
-        android:text="@string/view_movie"
-        android:textAlignment="center"
         android:textColor="#000000"/>
 
 </LinearLayout>

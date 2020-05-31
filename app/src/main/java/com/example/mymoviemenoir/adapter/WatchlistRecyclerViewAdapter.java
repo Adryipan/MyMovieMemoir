@@ -25,9 +25,9 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
 
             public ViewHolder(View itemView){
                 super(itemView);
-                movieNameTV = itemView.findViewById(R.id.rv_3col_rb_col1);
-                releaseDateTV = itemView.findViewById(R.id.rv_3vol_rb_col2);
-                timeAddedTV = itemView.findViewById(R.id.rv_3vol_col3);
+                movieNameTV = itemView.findViewById(R.id.rv_3col_col1);
+                releaseDateTV = itemView.findViewById(R.id.rv_3col_col2);
+                timeAddedTV = itemView.findViewById(R.id.rv_3col_col3);
             }
 
         }
@@ -63,13 +63,14 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
                 notifyDataSetChanged();
             }
         });
+
         final WatchlistResult movie = watchlistResults.get(position);
         TextView tvMovieName = viewHolder.movieNameTV;
         tvMovieName.setText(movie.getMovie().getMovieName());
         TextView tvReleaseDate = viewHolder.releaseDateTV;
         tvReleaseDate.setText(movie.getMovie().getReleaseDate());
         TextView tvTimeAdded = viewHolder.timeAddedTV;
-        tvTimeAdded.setText(movie.getMovie().getReleaseDate());
+        tvTimeAdded.setText(movie.getMovie().getTimeAdded());
 
     }
 
@@ -78,14 +79,20 @@ public class WatchlistRecyclerViewAdapter  extends RecyclerView.Adapter
         return watchlistResults.size();
     }
 
-    public WatchlistResult getSelectedItem(){
-        return watchlistResults.get(selectedPosition);
-    }
-
-    public void deleteDate(){
-        watchlistResults.remove(selectedPosition);
+    public void setWatchlistResults (List<WatchlistResult> results){
+        this.watchlistResults = results;
         notifyDataSetChanged();
     }
 
-
+    public WatchlistResult getSelectedItem(){
+        if(getItemCount() > 0){
+            if(selectedPosition != -1) {
+                return watchlistResults.get(selectedPosition);
+            }else{
+                return null;
+            }
+        }else {
+            return null;
+        }
+    }
 }
