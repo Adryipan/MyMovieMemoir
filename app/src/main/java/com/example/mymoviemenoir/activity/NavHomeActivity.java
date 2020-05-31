@@ -1,16 +1,21 @@
 package com.example.mymoviemenoir.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Menu;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.fragment.HomeFragment;
@@ -19,24 +24,7 @@ import com.example.mymoviemenoir.fragment.MemoirFragment;
 import com.example.mymoviemenoir.fragment.ReportFragment;
 import com.example.mymoviemenoir.fragment.SearchFragment;
 import com.example.mymoviemenoir.fragment.WatchlistFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class NavHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -50,11 +38,8 @@ public class NavHomeActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_nav_home);
         //Add the user to shared preference
         Intent intent = this.getIntent();
-        String user = intent.getStringExtra("USERID");
-        SharedPreferences sharedPref = getSharedPreferences("USERID", Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sharedPref.edit();
-        spEditor.putString("USERID", user);
-        spEditor.apply();
+
+
 
         //Add the tool bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,7 +57,13 @@ public class NavHomeActivity extends AppCompatActivity implements NavigationView
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-        replaceFragment(new HomeFragment());
+
+
+        if(intent.hasExtra("start")){
+            replaceFragment(new WatchlistFragment());
+        }else{
+            replaceFragment(new HomeFragment());
+        }
 
     }
 

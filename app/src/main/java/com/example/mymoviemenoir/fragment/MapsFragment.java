@@ -19,7 +19,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mymoviemenoir.R;
-import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.entity.MapCinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 import com.example.mymoviemenoir.neworkconnection.SearchGoogleMapAPI;
@@ -31,11 +30,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
@@ -185,7 +182,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             for(MapCinema thisCinema : cinemas) {
                 //Pin the cinemas
                 if (thisCinema.getGeoCode().latitude != 999 & thisCinema.getGeoCode().longitude != 999) {
-                    googleMap.addMarker(new MarkerOptions().position(thisCinema.getGeoCode()).title(thisCinema.getCinemaName())
+                    googleMap.addMarker(new MarkerOptions().position(thisCinema.getGeoCode()).title(thisCinema.getCinemaName() + " " + thisCinema.getSuburb())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 }
             }

@@ -76,11 +76,12 @@ public class SearchGoogleAPI {
                     //Only look at IMDB
                     if(metaTag.getString("og:site_name").toUpperCase().equals("IMDB")){
                         String title = metaTag.getString("title");
+                        title = title.substring(0, title.length()-6);
                         //extract the name (Title of every jsonObject)
-                        String movieName = title.split("-")[0].split(Pattern.quote("("))[0].trim();
+                        String movieName = title.split(Pattern.quote("("))[0].trim();
 
                         //extract the year (From the title of each json)
-                        String releaseYear = title.split("-")[0].split(Pattern.quote("("))[1].substring(0,4);
+                        String releaseYear = title.split(Pattern.quote("("))[1].substring(0,4);
 
                         //extract image link (og.image)
                         String imageLink = metaTag.getString("og:image");
@@ -90,8 +91,6 @@ public class SearchGoogleAPI {
 
                         SearchMovieResult thisResult = new SearchMovieResult(movieName, releaseYear, imageLink, imdbID);
                         movieList.add(thisResult);
-
-                        break;
                     }
                 }
 

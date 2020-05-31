@@ -21,7 +21,6 @@ import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

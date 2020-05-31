@@ -1,18 +1,18 @@
 package com.example.mymoviemenoir.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
@@ -39,10 +39,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(!username.trim().isEmpty()) {
                     String password = passwordET.getText().toString();
                     if(!password.trim().isEmpty()) {
-
-//                //for debug
-                username = "john.smith@monash.edu.au";
-                password = "john";
 
                         if (!username.isEmpty() && !password.isEmpty()) {
                             GetByAuthenticationTask getByAuthenticationTask = new GetByAuthenticationTask();
@@ -81,7 +77,10 @@ public class LoginActivity extends AppCompatActivity {
             if(userId != null) {
                 if (!userId.isEmpty()) {
                     Intent intent = new Intent(LoginActivity.this, NavHomeActivity.class);
-                    intent.putExtra("USERID", userId);
+                    SharedPreferences sharedPref = getSharedPreferences("USERID", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor spEditor = sharedPref.edit();
+                    spEditor.putString("USERID", userId);
+                    spEditor.apply();
                     startActivity(intent);
                 } else {
                     CharSequence message = "Username and Password not matched.";

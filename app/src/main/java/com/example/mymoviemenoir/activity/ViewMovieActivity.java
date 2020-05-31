@@ -1,5 +1,7 @@
 package com.example.mymoviemenoir.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.ReminderBroadcast;
 import com.example.mymoviemenoir.RoomEntity.MOVIE;
 import com.example.mymoviemenoir.entity.Movie;
 import com.example.mymoviemenoir.neworkconnection.SearchOMDbAPI;
@@ -46,6 +49,7 @@ public class ViewMovieActivity extends AppCompatActivity {
         watchlistViewModel.getAllMovies().observe(this, new Observer<List<MOVIE>>() {
             @Override
             public void onChanged(List<MOVIE> moviesResult) {
+
             }
         });
 
@@ -155,6 +159,7 @@ public class ViewMovieActivity extends AppCompatActivity {
             }
         }
 
+
         @Override
         protected void onPostExecute(String result) {
            //Result is null means not added
@@ -163,6 +168,20 @@ public class ViewMovieActivity extends AppCompatActivity {
                 watchListBtn.setEnabled(false);
             }else{
                 Toast.makeText(ViewMovieActivity.this, result + " added to watchlist", Toast.LENGTH_SHORT).show();
+                Calendar calendar = Calendar.getInstance();
+                int requestCode = Integer.valueOf(new SimpleDateFormat("dd").format(calendar.getTime()));
+
+                Intent broadcastIntent = new Intent(getApplicationContext(), ReminderBroadcast.class);
+                PendingIntent actionIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                //For demo
+                calendar.add(Calendar.SECOND, 1);
+//                calendar.add(Calendar.DAY_OF_MONTH, 7);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), actionIntent);
+
+
             }
         }
     }

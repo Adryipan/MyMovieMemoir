@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymoviemenoir.activity.ViewMovieActivity;
 import com.example.mymoviemenoir.R;
+import com.example.mymoviemenoir.activity.ViewMovieActivity;
 import com.example.mymoviemenoir.model.SearchMovieResult;
 import com.squareup.picasso.Picasso;
 

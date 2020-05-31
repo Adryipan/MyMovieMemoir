@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
-import com.example.mymoviemenoir.neworkconnection.SearchGoogleAPI;
 import com.example.mymoviemenoir.adapter.SearchMovieRecyclerViewAdapter;
 import com.example.mymoviemenoir.model.SearchMovieResult;
+import com.example.mymoviemenoir.neworkconnection.SearchGoogleAPI;
 
 import java.util.ArrayList;
 
@@ -53,7 +53,7 @@ public class SearchFragment extends Fragment {
                     new AsyncTask<String, Void, String>() {
                         @Override
                         protected String doInBackground(String... strings) {
-                            return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"3"});
+                            return SearchGoogleAPI.search(keyword, new String[]{"num"}, new String[]{"5"});
                         }
 
                         @Override

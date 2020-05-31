@@ -1,12 +1,5 @@
 package com.example.mymoviemenoir.model;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class TopFiveMovieResult {
     private String name;
     private String releaseDate;

@@ -1,12 +1,12 @@
 package com.example.mymoviemenoir.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mymoviemenoir.R;
 import com.squareup.picasso.Picasso;

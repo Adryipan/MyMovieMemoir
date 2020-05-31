@@ -1,6 +1,5 @@
 package com.example.mymoviemenoir.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,11 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviemenoir.R;
 import com.example.mymoviemenoir.activity.ViewMemoirActivity;
-import com.example.mymoviemenoir.fragment.MemoirFragment;
 import com.example.mymoviemenoir.model.MemoirResult;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
