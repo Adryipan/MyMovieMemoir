@@ -1,23 +1,10 @@
 package com.example.mymoviemenoir.entity;
 
-public class PersonWithId {
-    String firstName;
-    String surname;
-    String gender;
-    String dob;
-    String streetAddress;
-    String postcode;
-    String stateCode;
+public class PersonWithId extends Person{
     int userId;
 
     public PersonWithId(String firstName, String surname, String gender, String dob, String streetAddress, String postcode, String stateCode, int userId) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.gender = gender;
-        this.dob = dob;
-        this.streetAddress = streetAddress;
-        this.postcode = postcode;
-        this.stateCode = stateCode;
+        super(firstName, surname, gender, dob, streetAddress, postcode, stateCode);
         this.userId = userId;
     }
 

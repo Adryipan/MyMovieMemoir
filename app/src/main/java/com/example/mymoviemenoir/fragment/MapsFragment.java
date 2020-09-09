@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -172,7 +173,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         @Override
         protected ArrayList<MapCinema> doInBackground(Void... voids) {
-            return networkConnection.getAllCinemaWithGeoCode();
+            String cinemaResult = networkConnection.getAllCinema();
+            ArrayList<MapCinema> cinemaResultList = new ArrayList<>();
+            try{
+                // Convert the cinema data from the database to geocode with the google api
+                JSONArray jsonArray = new JSONArray(cinemaResult);
+                int numberOfItems = jsonArray.length();
+                if(numberOfItems > 0){
+                    for(int i = 0; i < numberOfItems; i++) {
+                        JSONObject thisCinema = jsonArray.getJSONObject(i);
+                        //Call SearchGoogleMap for geocode
+                        String googleMapResult = SearchGoogleMapAPI.search(thisCinema.getString("suburb"));
+                        LatLng geocode = SearchGoogleMapAPI.getLatLng(googleMapResult);
+
+                        //Add this object to the list
+                        cinemaResultList.add(new MapCinema(thisCinema.getInt("cinemaId"),
+                                thisCinema.getString("cinemaName"), thisCinema.getString("suburb"),
+                                geocode));
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return cinemaResultList;
         }
 
         @Override

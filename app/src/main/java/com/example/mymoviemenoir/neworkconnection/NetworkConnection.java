@@ -40,7 +40,7 @@ public class NetworkConnection {
         client = new OkHttpClient();
     }
 
-    private static final String BASE_URL = "http://10.0.2.2:15321/MyMovieMemoir/webresources/";
+    private static final String BASE_URL = "http://10.0.2.2:15321/MyMovieMemoirDB/webresources/";
     private static final String RESOURCE_PERSON = "moviemenoirws.person/";
     private static final String RESOURCE_CINEMA = "moviemenoirws.cinema/";
     private static final String RESOURCE_CREDENTIAL = "moviemenoirws.credentials/";
@@ -180,59 +180,18 @@ public class NetworkConnection {
         return results;
     }
 
-    //Get all cinemas with Geocode from the database
-    public ArrayList<MapCinema> getAllCinemaWithGeoCode(){
-        ArrayList<MapCinema> cinemaResult = new ArrayList<>();
-        //Get all cinema from server
-        Request.Builder builder = new Request.Builder();
-        builder.url(BASE_URL + RESOURCE_CINEMA);
-        Request request = builder.build();
-        try{
-            Response response = client.newCall(request).execute();
-            results = response.body().string();
-            JSONArray jsonArray = new JSONArray(results);
-            int numberOfItems = jsonArray.length();
-            if(numberOfItems > 0){
-                for(int i = 0; i < numberOfItems; i++) {
-                    JSONObject thisCinema = jsonArray.getJSONObject(i);
-                    //Call SearchGoogleMap for geocode
-                    String googleMapResult = SearchGoogleMapAPI.search(thisCinema.getString("suburb"));
-                    LatLng geocode = SearchGoogleMapAPI.getLatLng(googleMapResult);
-
-                    //Add this object to the list
-                    cinemaResult.add(new MapCinema(thisCinema.getInt("cinemaId"),
-                            thisCinema.getString("cinemaName"), thisCinema.getString("suburb"),
-                            geocode));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return cinemaResult;
-    }
-
     //Get all cinema from database
-    public ArrayList<Cinema> getAllCinema(){
-        ArrayList<Cinema> cinemaResult = new ArrayList<>();
+    public String getAllCinema(){
         Request.Builder builder = new Request.Builder();
         builder.url(BASE_URL + RESOURCE_CINEMA);
         Request request = builder.build();
         try{
             Response response = client.newCall(request).execute();
             results = response.body().string();
-            JSONArray jsonArray = new JSONArray(results);
-            int numberOfItems = jsonArray.length();
-            if(numberOfItems > 0){
-                for(int i = 0; i < numberOfItems; i++){
-                    JSONObject thisCinema = jsonArray.getJSONObject(i);
-                    cinemaResult.add(new Cinema(thisCinema.getInt("cinemaId"), thisCinema.getString("cinemaName"), thisCinema.getString("suburb")));
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return cinemaResult;
+        return results;
     }
 
     //Get all memoir and return list of MemoirResult
@@ -262,6 +221,7 @@ public class NetworkConnection {
                     String onlineRating = SearchOMDbAPI.getIMDBRating(omdbResult);
                     String genre = SearchOMDbAPI.getGenre(omdbResult);
 
+                    // Get the release date of the movie
                     String releaseMonth = "";
                     try {
                         Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(releaseDate.split(" ")[1]);
@@ -284,6 +244,7 @@ public class NetworkConnection {
                     String cast = SearchOMDbAPI.getCast(omdbResult);
                     String plot = SearchOMDbAPI.getPlot(omdbResult);
 
+                    // Convert the rating score to stars
                     float convertedOnlineRating = 0f;
                     if (!onlineRating.equals("N/A")) {
                         convertedOnlineRating = Float.parseFloat(onlineRating);
