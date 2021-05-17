@@ -29,6 +29,9 @@ import com.example.mymoviemenoir.entity.Cinema;
 import com.example.mymoviemenoir.neworkconnection.NetworkConnection;
 import com.example.mymoviemenoir.viewmodel.WatchlistViewModel;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -255,7 +258,21 @@ public class AddToMemoirActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<Cinema> doInBackground(Void... voids) {
-            return networkConnection.getAllCinema();
+            String resultString = networkConnection.getAllCinema();
+            ArrayList<Cinema> result = new ArrayList<>();
+            try{
+                JSONArray jsonArray = new JSONArray(resultString);
+                int numberOfItems = jsonArray.length();
+                if(numberOfItems > 0){
+                    for(int i = 0; i < numberOfItems; i++){
+                        JSONObject thisCinema = jsonArray.getJSONObject(i);
+                        result.add(new Cinema(thisCinema.getInt("cinemaId"), thisCinema.getString("cinemaName"), thisCinema.getString("suburb")));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
         }
 
         @Override

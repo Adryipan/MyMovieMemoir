@@ -36,11 +36,16 @@ public class NetworkConnection {
     private String results;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+    public static native String mmmBaseUrl();
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     public NetworkConnection(){
         client = new OkHttpClient();
     }
 
-    private static final String BASE_URL = "http://10.0.2.2:15321/MyMovieMemoirDB/webresources/";
+    private static final String BASE_URL = mmmBaseUrl();
     private static final String RESOURCE_PERSON = "moviemenoirws.person/";
     private static final String RESOURCE_CINEMA = "moviemenoirws.cinema/";
     private static final String RESOURCE_CREDENTIAL = "moviemenoirws.credentials/";
