@@ -9,8 +9,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class SearchOMDbAPI {
-    private static final String apiKey = "4526d397";
-    private static final String BASE_URL =  "http://www.omdbapi.com/?apikey=" + apiKey + "&";
+
+//    private static final String apiKey = "";
+//    private static final String BASE_URL =  "http://www.omdbapi.com/?apikey=" + apiKey + "&";
+
+    public static native String omdbBaseUrl();
+    static {
+        System.loadLibrary("native-lib");
+    }
+
+    private static final String BASE_URL =  omdbBaseUrl();
+
 
     public static String searchByIMDbID (String imdbID){
         String result = "";

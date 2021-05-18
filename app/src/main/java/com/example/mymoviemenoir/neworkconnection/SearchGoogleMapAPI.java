@@ -14,7 +14,7 @@ import okhttp3.Response;
 
 public class SearchGoogleMapAPI {
 
-    private static final String API_KEY = "";
+    private static final String API_KEY = GoogleAPI.API_KEY;
     private static final String BASE_URL_subfix = "&key=" + API_KEY;
     private static final String BASE_URL =
             "https://maps.googleapis.com/maps/api/geocode/json?address=";

@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class SearchGoogleAPI {
 
-    private static final String API_KEY = "";
+    private static final String API_KEY = GoogleAPI.API_KEY;
     private static final String SEARCH_ID_cx = "";
     private static final String BASE_URL = "https://www.googleapis.com/customsearch/v1?key="+
                                             API_KEY + "&cx=" + SEARCH_ID_cx + "&q=";
