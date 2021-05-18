@@ -2,7 +2,9 @@
 
 ## Overview
 This app is designed for user to store memoir for movies and look for movie related information.
-The project is currently under rework.
+The project is currently under rework, please stay tuned for update >_<.
+
+The backend application server can be seen [here](https://github.com/Adryipan/MyMovieMemoir-Backend)
 
 ## Installation
 Clone this repository and import into **Android Studio**
